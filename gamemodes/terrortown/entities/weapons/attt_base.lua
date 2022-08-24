@@ -195,8 +195,8 @@ function SWEP:PrimaryAttack()
 	if p then
 		local fli = self:GetRecoilFlip() and -1 or 1
 		local ads = Lerp( self:GetSightDelta(), 1, self.RecoilADSMult )
-		if ( game.SinglePlayer() and SERVER ) or ( !game.SinglePlayer() and (CLIENT and IsFirstTimePredicted() or SERVER) ) then
-			p:SetEyeAngles( p:EyeAngles() + Angle( ads * -self.RecoilUp * (1-self.RecoilUpDrift), ads * fli * self.RecoilSide * (1-self.RecoilSideDrift) ) )
+		if true then
+			if CLIENT and IsFirstTimePredicted() then p:SetEyeAngles( p:EyeAngles() + Angle( ads * -self.RecoilUp * (1-self.RecoilUpDrift), ads * fli * self.RecoilSide * (1-self.RecoilSideDrift) ) ) end
 			self:SetRecoilP( self:GetRecoilP() + (ads * -self.RecoilUp * self.RecoilUpDrift) )
 			self:SetRecoilY( self:GetRecoilY() + (ads * fli * -self.RecoilSide * self.RecoilSideDrift) )
 		end
@@ -370,12 +370,12 @@ function SWEP:Think()
 		local ry = self:GetRecoilY()
 		if rp != 0 then
 			local remove = rp - math.Approach( rp, 0, FrameTime() * self.RecoilUpDecay )
-			p:SetEyeAngles( p:EyeAngles() + ( Angle( remove, 0 ) ) )
+			if CLIENT and IsFirstTimePredicted() then p:SetEyeAngles( p:EyeAngles() + ( Angle( remove, 0 ) ) ) end
 			self:SetRecoilP( rp - remove )
 		end
 		if ry != 0 then
 			local remove = ry - math.Approach( ry, 0, FrameTime() * self.RecoilSideDecay )
-			p:SetEyeAngles( p:EyeAngles() - ( Angle( 0, remove ) ) )
+			if CLIENT and IsFirstTimePredicted() then p:SetEyeAngles( p:EyeAngles() - ( Angle( 0, remove ) ) ) end
 			self:SetRecoilY( math.Approach( ry, ry - remove, math.huge ) )
 		end
 		local ht = self.HoldTypeHip
