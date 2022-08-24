@@ -78,7 +78,7 @@ SWEP.RecoilFlipChance					= ( 1 / 4 ) -- chance to flip recoil direction
 SWEP.RecoilADSMult						= ( 1 / 4 ) -- multiply shot recoil by this amount when ads'd
 
 SWEP.Dispersion							= 0.5
-SWEP.Dispersion_Move					= 2 -- at 200 hu/s
-SWEP.Dispersion_Air						= 1
+SWEP.Dispersion_Move					= 1.2 -- at 200 hu/s
+SWEP.Dispersion_Air						= 0.6
 SWEP.Dispersion_Crouch					= ( 1 / 3 )
 SWEP.Dispersion_Sights					= ( 1 / 5 )
