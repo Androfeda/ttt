@@ -47,15 +47,24 @@ SWEP.IronSightsAng         = Vector( 2.6, 1.37, 3.5 )
 -- Androfeda Rewrite
 SWEP.Firemodes = {
 	{
-		Count = math.huge,
+		Count = 1,
 		Delay = 1.5,
 	}
 }
 
-SWEP.DamageNear = 22
-SWEP.DamageFar = 24
+SWEP.DamageNear = 50
+SWEP.DamageFar = 60
 SWEP.RangeNear = 20
-SWEP.RangeFar = 50
+SWEP.RangeFar = 60
+
+SWEP.BodyDamageMults = {
+	[HITGROUP_HEAD]		= 4,
+	[HITGROUP_LEFTARM]	= 1,
+	[HITGROUP_RIGHTARM]	= 1,
+	[HITGROUP_LEFTLEG]	= 0.55,
+	[HITGROUP_RIGHTLEG]	= 0.55,
+	[HITGROUP_GEAR]		= 1,
+}
 
 SWEP.ViewModelFOV = 70--60
 SWEP.ActivePos = {
@@ -63,25 +72,77 @@ SWEP.ActivePos = {
 	Ang = Angle(3, 3, -5),
 }
 SWEP.IronsightPos = {
-	Pos = Vector( -3, -15, -0 ),
-	Ang = Angle( 2.6, 1.37, 3.5 ),
+	Pos = Vector( -6.7, -15, 0 ),
+	Ang = Angle( 0, 0, 0 ),
 	Mag = 4,
 }
 
 --
 -- Recoil
 --
-SWEP.RecoilUp							= 2.5 -- degrees punched
-SWEP.RecoilUpDrift						= 0.5 -- how much will be smooth recoil
-SWEP.RecoilUpDecay						= 20 -- how much recoil to remove per second
-SWEP.RecoilSide							= 1.5 -- degrees punched, in either direction (-100% to 100%)
+SWEP.RecoilUp							= 3 -- degrees punched
+SWEP.RecoilUpDrift						= 1 -- how much will be smooth recoil
+SWEP.RecoilUpDecay						= 10 -- how much recoil to remove per second
+SWEP.RecoilSide							= 2 -- degrees punched, in either direction (-100% to 100%)
 SWEP.RecoilSideDrift					= 1 -- how much will be smooth recoil
-SWEP.RecoilSideDecay					= 10 -- how much recoil to remove per second
-SWEP.RecoilFlipChance					= ( 1 / 3 ) -- chance to flip recoil direction
-SWEP.RecoilADSMult						= ( 1 / 3 ) -- multiply shot recoil by this amount when ads'd
+SWEP.RecoilSideDecay					= 20 -- how much recoil to remove per second
+SWEP.RecoilFlipChance					= ( 1 / 2 ) -- chance to flip recoil direction
+SWEP.RecoilADSMult						= ( 1 / 1 ) -- multiply shot recoil by this amount when ads'd
 
-SWEP.Dispersion							= 0.7
-SWEP.Dispersion_Move					= 1.1 -- at 200 hu/s
-SWEP.Dispersion_Air						= 1.1
+SWEP.Dispersion							= 0.5
+SWEP.Dispersion_Move					= 1 -- at 200 hu/s
+SWEP.Dispersion_Air						= 1
 SWEP.Dispersion_Crouch					= ( 1 / 3 )
-SWEP.Dispersion_Sights					= ( 1 / 3 )
+SWEP.Dispersion_Sights					= ( 1 / 15 )
+
+if CLIENT then
+local scope = Material("sprites/scope.vtf", "smooth")--surface.GetTextureID("sprites/scope")
+function SWEP:CustomDrawHUD()
+	local perc1 = math.Clamp( math.TimeFraction( 0.7, 0.9, self:GetSightDelta() ), 0, 1)
+	local perc2 = math.Clamp( math.TimeFraction( 0.9, 1, self:GetSightDelta() ), 0, 1)
+	
+	local scrW = ScrW()
+	local scrH = ScrH()
+
+	local x = scrW / 2.0
+	local y = scrH / 2.0
+	local scope_size = scrH
+
+	surface.SetDrawColor( 0, 0, 0, perc1*255 )
+	-- crosshair
+	local gap = 80
+	local length = scope_size
+	surface.DrawLine( x - length, y, x - gap, y )
+	surface.DrawLine( x + length, y, x + gap, y )
+	surface.DrawLine( x, y - length, x, y - gap )
+	surface.DrawLine( x, y + length, x, y + gap )
+
+	gap = 0
+	length = 50
+	surface.DrawLine( x - length, y, x - gap, y )
+	surface.DrawLine( x + length, y, x + gap, y )
+	surface.DrawLine( x, y - length, x, y - gap )
+	surface.DrawLine( x, y + length, x, y + gap )
+
+	surface.SetDrawColor( 0, 0, 0, perc2*255 )
+
+	-- cover edges
+	local sh = scope_size / 2
+	local w = (x - sh) + 2
+	surface.DrawRect(0, 0, w, scope_size)
+	surface.DrawRect(x + sh - 2, 0, w, scope_size)
+	
+	-- cover gaps on top and bottom of screen
+	surface.DrawLine( 0, 0, scrW, 0 )
+	surface.DrawLine( 0, scrH - 1, scrW, scrH - 1 )
+
+	surface.SetDrawColor(255, 0, 0, 255)
+	surface.DrawLine(x, y, x + 1, y + 1)
+
+	-- scope
+	surface.SetMaterial(scope)
+	surface.SetDrawColor(255, 255, 255, perc2*255)
+
+	surface.DrawTexturedRectRotated(x, y, scope_size, scope_size, 0)
+end
+end

@@ -271,6 +271,7 @@ function SWEP:GetHeadshotMultiplier(victim, dmginfo)
 end
 
 function SWEP:DrawHUD()
+	if self.CustomDrawHUD then self:CustomDrawHUD() end
 	draw.SimpleText( self:GetNWString("TestRange", "no data"), "Trebuchet24", ScrW()/2, ScrH()*0.75, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	draw.SimpleText( self:GetNWString("TestDisp", "no data"), "Trebuchet24", ScrW()/2, ScrH()*0.8, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end

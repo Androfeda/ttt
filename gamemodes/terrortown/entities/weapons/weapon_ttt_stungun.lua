@@ -86,7 +86,7 @@ SWEP.RangeNear = 10
 SWEP.RangeFar = 30
 
 SWEP.BodyDamageMults = {
-	[HITGROUP_HEAD]		= 4, -- brain fizz
+	[HITGROUP_HEAD]		= 4.5, -- brain fizz
 	[HITGROUP_LEFTARM]	= 1,
 	[HITGROUP_RIGHTARM]	= 1,
 	[HITGROUP_LEFTLEG]	= 0.55,
