@@ -61,7 +61,7 @@ SWEP.ActivePos = {
 SWEP.IronsightPos = {
 	Pos = Vector(-7.63, -9.2, 0.69),
 	Ang = Angle(2.599, -1.3, -3.6),
-	Mag = 1.1,
+	Mag = 2,
 }
 
 --

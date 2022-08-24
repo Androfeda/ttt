@@ -62,7 +62,7 @@ SWEP.ActivePos = {
 SWEP.IronsightPos = {
 	Pos = Vector(-6.22, -9.2, 1.1),
 	Ang = Angle(0, 0, -1),
-	Mag = 1.1,
+	Mag = 2,
 }
 
 --
@@ -77,7 +77,7 @@ SWEP.RecoilSideDecay					= 10 -- how much recoil to remove per second
 SWEP.RecoilFlipChance					= ( 1 / 2 ) -- chance to flip recoil direction
 SWEP.RecoilADSMult						= ( 1 / 3 ) -- multiply shot recoil by this amount when ads'd
 
-SWEP.Dispersion							= 1
+SWEP.Dispersion							= 0.7
 SWEP.Dispersion_Move					= 1.1 -- at 200 hu/s
 SWEP.Dispersion_Air						= 1.1
 SWEP.Dispersion_Crouch					= ( 2 / 3 )
