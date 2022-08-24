@@ -20,7 +20,7 @@ end
 SWEP.Base                   = "weapon_tttbase"
 
 SWEP.ViewModel              = "models/weapons/v_crowbar.mdl"
-SWEP.WorldModel             = "models/props/cs_office/microwave.mdl"
+SWEP.WorldModel             = "models/weapons/w_medkit.mdl"
 
 SWEP.Primary.ClipSize       = -1
 SWEP.Primary.DefaultClip    = -1
@@ -118,10 +118,3 @@ function SWEP:Deploy()
    end
    return true
 end
-
-function SWEP:DrawWorldModel()
-end
-
-function SWEP:DrawWorldModelTranslucent()
-end
-
