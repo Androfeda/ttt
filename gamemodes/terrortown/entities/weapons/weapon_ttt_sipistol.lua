@@ -65,6 +65,7 @@ SWEP.AnimOverride = {
 	},
 	[ACT_VM_DRAW] = {
 		Source = ACT_VM_DRAW_SILENCED,
+		Mult = 1.5,
 	},
 	[ACT_VM_IDLE] = {
 		Source = ACT_VM_IDLE_SILENCED,

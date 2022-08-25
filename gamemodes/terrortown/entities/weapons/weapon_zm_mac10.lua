@@ -41,6 +41,10 @@ SWEP.IronSightsAng       = Vector(0.699, -5.301, -7)
 
 -- Androfeda Rewrite
 SWEP.AnimOverride = {
+	[ACT_VM_DRAW] = {
+		Source = ACT_VM_DRAW,
+		Mult = 1.5,
+	},
 	[ACT_VM_RELOAD] = {
 		Source = ACT_VM_RELOAD,
 		LoadIn = 1.8,
