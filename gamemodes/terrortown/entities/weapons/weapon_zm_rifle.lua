@@ -51,6 +51,10 @@ SWEP.AnimOverride = {
 		LoadIn = 1.4,
 		StopSightTime = 2.2,
 	},
+	[ACT_VM_PRIMARYATTACK] = {
+		Source = ACT_VM_PRIMARYATTACK,
+		Mult = 0.88,
+	},
 }
 
 SWEP.Firemodes = {

@@ -467,18 +467,6 @@ local function ATTT_HUD(p)
 		ATTT_TextS( we:Ammo1(), "ATTT_Bahnschrift_12", w - (c*29) - bow, h - (c*8) - (c*13.9), CLR_W, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM )
 		ATTT_TextS( "/", "ATTT_Bahnschrift_12", w - (c*21) - bow, h - (c*8) - (c*14.1), CLR_W, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM )
 
-		if false then
-			local am = game.GetAmmoName( we:GetPrimaryAmmoType() )
-			am = refer[am]
-			if wover[we:GetClass()] then
-				am = wover[we:GetClass()]
-			end
-			surface.SetMaterial( am.Texture )
-			for i=1, we:Clip1() do
-				surface.DrawTexturedRect( 0, 0, (c*am.size), (c*am.size) )
-			end
-		end
-
 	end
 end
 
