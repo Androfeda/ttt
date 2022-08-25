@@ -40,6 +40,14 @@ SWEP.IronSightsPos       = Vector(-8.921, -9.528, 2.9)
 SWEP.IronSightsAng       = Vector(0.699, -5.301, -7)
 
 -- Androfeda Rewrite
+SWEP.AnimOverride = {
+	[ACT_VM_RELOAD] = {
+		Source = ACT_VM_RELOAD,
+		LoadIn = 1.8,
+		StopSightTime = 2.8,
+	},
+}
+
 SWEP.Firemodes = {
 	{
 		Count = math.huge,

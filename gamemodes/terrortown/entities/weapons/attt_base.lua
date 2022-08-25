@@ -89,6 +89,11 @@ function SWEP:Initalize()
 	self.Secondary.Automatic = true
 end
 
+ATTTSG_NO = 0
+ATTTSG_START = 1
+ATTTSG_INSERT = 2
+ATTTSG_FINISH = 3
+
 function SWEP:SetupDataTables()
 	self:NetworkVar("Bool", 0, "FiredLastShot")
 	self:NetworkVar("Bool", 1, "UserSight")
@@ -97,6 +102,7 @@ function SWEP:SetupDataTables()
 
 	self:NetworkVar("Int", 0, "BurstCount")
 	self:NetworkVar("Int", 1, "Firemode")
+	self:NetworkVar("Int", 2, "ShotgunReloading")
 
 	self:NetworkVar("Float", 0, "IdleIn")
 	self:NetworkVar("Float", 1, "SightDelta")
@@ -219,51 +225,53 @@ local LimbCompensation = {
 
 -- Bullets
 function SWEP:FireBullet(bullet)
-	local dir = self:GetOwner():EyeAngles()
 	local dispersion = self:GetDispersion()
-	local shared_rand = CurTime()
-	local x = util.SharedRandom(shared_rand, -0.5, 0.5) + util.SharedRandom(shared_rand + 1, -0.5, 0.5)
-	local y = util.SharedRandom(shared_rand + 2, -0.5, 0.5) + util.SharedRandom(shared_rand + 3, -0.5, 0.5)
-	dir = dir:Forward() + (x * math.rad(dispersion) * dir:Right()) + (y * math.rad(dispersion) * dir:Up())
+	for i=1, self.Pellets or 1 do
+		local dir = self:GetOwner():EyeAngles()
+		local shared_rand = CurTime() + (i-1)
+		local x = util.SharedRandom(shared_rand, -0.5, 0.5) + util.SharedRandom(shared_rand + 1, -0.5, 0.5)
+		local y = util.SharedRandom(shared_rand + 2, -0.5, 0.5) + util.SharedRandom(shared_rand + 3, -0.5, 0.5)
+		dir = dir:Forward() + (x * math.rad(dispersion) * dir:Right()) + (y * math.rad(dispersion) * dir:Up())
 
-	bullet.Src = self:GetOwner():GetShootPos()
-	bullet.Dir = dir
-	bullet.Distance = 32768
+		bullet.Src = self:GetOwner():GetShootPos()
+		bullet.Dir = dir
+		bullet.Distance = 32768
 
-	bullet.Callback = function( atk, tr, dmg )
-		-- Thank you Arctic, very cool
-		local ent = tr.Entity
+		bullet.Callback = function( atk, tr, dmg )
+			-- Thank you Arctic, very cool
+			local ent = tr.Entity
 
-		if self.CustomCallback then self:CustomCallback( atk, tr, dmg ) end
+			if self.CustomCallback then self:CustomCallback( atk, tr, dmg ) end
 
-		dmg:SetDamage( bullet.DamageNear )
-		dmg:SetDamageType( DMG_BULLET )
+			dmg:SetDamage( bullet.DamageNear )
+			dmg:SetDamageType( DMG_BULLET )
 
-		local d = dmg:GetDamage()
-		local min, max = bullet.RangeNear, bullet.RangeFar
-		local range = atk:GetPos():Distance(tr.HitPos)
-		local XD = 0
-		if range < min then
-			XD = 0
-		else
-			XD = math.Clamp((range - min) / (max - min), 0, 1)
+			local d = dmg:GetDamage()
+			local min, max = bullet.RangeNear, bullet.RangeFar
+			local range = atk:GetPos():Distance(tr.HitPos)
+			local XD = 0
+			if range < min then
+				XD = 0
+			else
+				XD = math.Clamp((range - min) / (max - min), 0, 1)
+			end
+
+			dmg:SetDamage( Lerp( 1-XD, bullet.DamageFar, bullet.DamageNear ) )
+
+			self:SetNWString( "TestRange", math.Round( (1-XD)*100 ) .. "% effectiveness, " .. math.Round( dmg:GetDamage() ) .. " dmg" )
+
+			if IsValid(ent) and ent:IsPlayer() then
+				local hg = tr.HitGroup
+				local gam = LimbCompensation
+				local gem = self.BodyDamageMults
+				if gem[hg] then dmg:ScaleDamage(gem[hg]) end
+				if gam[hg] then dmg:ScaleDamage(gam[hg]) end
+			end
+			return
 		end
 
-		dmg:SetDamage( Lerp( 1-XD, bullet.DamageFar, bullet.DamageNear ) )
-
-		self:SetNWString( "TestRange", math.Round( (1-XD)*100 ) .. "% effectiveness, " .. math.Round( dmg:GetDamage() ) .. " dmg" )
-
-		if IsValid(ent) and ent:IsPlayer() then
-			local hg = tr.HitGroup
-			local gam = LimbCompensation
-			local gem = self.BodyDamageMults
-			if gem[hg] then dmg:ScaleDamage(gem[hg]) end
-			if gam[hg] then dmg:ScaleDamage(gam[hg]) end
-		end
-		return
+		self:GetOwner():FireBullets( bullet )
 	end
-
-	self:GetOwner():FireBullets( bullet )
 end
 
 function SWEP:GetHeadshotMultiplier(victim, dmginfo)
@@ -293,7 +301,12 @@ function SWEP:Reload()
 	end
 
 	if self:RefillCount() > 0 then
-		self:SendAnim( ACT_VM_RELOAD, "reload" )
+		if self.ShotgunReloading then
+			self:SendAnim( ACT_SHOTGUN_RELOAD_START, "reload_start" )
+			self:SetShotgunReloading( ATTTSG_START )
+		else
+			self:SendAnim( ACT_VM_RELOAD, "reload" )
+		end
 	end
 
 	return true
@@ -301,7 +314,7 @@ end
 
 function SWEP:RefillCount(amount)
 	local spent = self:GetMaxClip1() - self:Clip1()
-	local refill = math.min( spent, self:Ammo1(), (amount or math.huge) )
+	local refill = math.min( spent, self:Ammo1(), (amount or math.huge), (self.ShotgunReloading and 1 or math.huge) )
 
 	return refill
 end
@@ -393,8 +406,17 @@ function SWEP:Think()
 		self:SetDISP_Move( math.Approach( self:GetDISP_Move(), movem, FrameTime() / 0.2 ) )
 		self:SetDISP_Crouch( math.Approach( self:GetDISP_Crouch(), p:Crouching() and 1 or 0, FrameTime() / 0.4 ) )
 	end
-	
-	if self:GetIdleIn() > 0 and self:GetIdleIn() <= CurTime() then
+
+	if self:GetShotgunReloading() == ATTTSG_START and self:GetReloadingTime() < CurTime() then
+		self:SetShotgunReloading( ATTTSG_INSERT )
+	elseif self:GetShotgunReloading() == ATTTSG_INSERT and self:GetReloadingTime() < CurTime() then
+		if self:Clip1() >= self:GetMaxClip1() then
+			self:SetShotgunReloading( ATTTSG_NO )
+			self:SendAnim( ACT_SHOTGUN_RELOAD_FINISH, "reload_finish" )
+		else
+			self:SendAnim( ACT_VM_RELOAD, "reload" )
+		end
+	elseif self:GetIdleIn() > 0 and self:GetIdleIn() <= CurTime() then
 		self:SendAnim( ACT_VM_IDLE, "idle" )
 		self:SetPlaybackRate( 1 )
 		self:SetIdleIn( -1 )
@@ -406,13 +428,19 @@ local fallback = {
 	Mult = 1,
 }
 function SWEP:SendAnim( act, hold )
-	local anim = self.AnimOverride--[act]
-	if !anim then
-		anim = fallback
-		anim.Source = act
-	else
+	local anim = fallback
+	if self.AnimOverride and self.AnimOverride[act] then
 		anim = self.AnimOverride[act]
+	else
+		anim.Source = act
 	end
+	--local anim = self.AnimOverride--[act]
+	--if !anim then
+	--	anim = fallback
+	--	anim.Source = act
+	--else
+	--	anim = self.AnimOverride[act]
+	--end
 	local mult = anim.Mult or 1
 	self:SendWeaponAnim( anim.Source )
 	self:SetPlaybackRate( mult )

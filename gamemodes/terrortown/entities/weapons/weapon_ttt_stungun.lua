@@ -73,6 +73,14 @@ function SWEP:CustomCallback(att, tr, dmginfo)
 end
 
 -- Androfeda Rewrite
+SWEP.AnimOverride = {
+	[ACT_VM_RELOAD] = {
+		Source = ACT_VM_RELOAD,
+		LoadIn = 1.9,
+		StopSightTime = 2.8,
+	},
+}
+
 SWEP.Firemodes = {
 	{
 		Count = math.huge,

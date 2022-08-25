@@ -41,6 +41,14 @@ SWEP.WorldModel            = "models/weapons/w_pist_glock18.mdl"
 SWEP.IronSightsPos         = Vector( -5.79, -3.9982, 2.8289 )
 
 -- Androfeda Rewrite
+SWEP.AnimOverride = {
+	[ACT_VM_RELOAD] = {
+		Source = ACT_VM_RELOAD,
+		LoadIn = 1.4,
+		StopSightTime = 1.6,
+	},
+}
+
 SWEP.Firemodes = {
 	{
 		Count = math.huge,

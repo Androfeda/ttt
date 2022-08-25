@@ -314,6 +314,37 @@ local function InfoPaint(client)
 
 end
 
+local fonts_to_make = {
+	["Bahnschrift"] = {
+		18,
+		24,
+		36,
+	},
+}
+
+for aa, bb in pairs(fonts_to_make) do
+	for cc, dd in pairs(bb) do
+		print(aa, bb, cc, dd)
+		surface.CreateFont("ATTT_" .. aa .. "_" .. dd, {
+			font = aa,
+			size = ScreenScale(dd),
+			weight = 0,
+		})
+	end
+end
+
+local function ATTT_HUD(p)
+	local c = ScreenScale(1)
+
+	local Role = "Preparing"
+	if p.IsTraitor and p:IsTraitor() then
+		Role = "Traitor"
+	end
+
+	draw.SimpleText(Role, "ATTT_Bahnschrift_18", (c*8), ScrH() - (c*48), color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+	draw.SimpleText(p:Health(), "ATTT_Bahnschrift_18", (c*8), ScrH() - (c*8), color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+end
+
 -- Paints player status HUD element in the bottom left
 function GM:HUDPaint()
    local client = LocalPlayer()
@@ -360,7 +391,8 @@ function GM:HUDPaint()
 
    -- Draw bottom left info panel
    if hook.Call( "HUDShouldDraw", GAMEMODE, "TTTInfoPanel" ) then
-       --InfoPaint(client)
+       InfoPaint(client)
+	   ATTT_HUD(client)
    end
 end
 

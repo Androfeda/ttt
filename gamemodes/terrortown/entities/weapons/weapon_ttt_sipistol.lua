@@ -46,14 +46,22 @@ SWEP.WorldModel            = "models/weapons/w_pist_usp_silencer.mdl"
 SWEP.IronSightsPos         = Vector( -5.91, -4, 2.84 )
 SWEP.IronSightsAng         = Vector(-0.5, 0, 0)
 
+-- We were bought as special equipment, and we have an extra to give
+function SWEP:WasBought(buyer)
+	if IsValid(buyer) then -- probably already self:GetOwner()
+		buyer:GiveAmmo( 20, "Pistol" )
+	end
+end
+
+-- Androfeda Rewrite
 SWEP.AnimOverride = {
 	[ACT_VM_PRIMARYATTACK] = {
 		Source = ACT_VM_PRIMARYATTACK_SILENCED,
 	},
 	[ACT_VM_RELOAD] = {
 		Source = ACT_VM_RELOAD_SILENCED,
-		-- LoadIn = 1.5,
-		-- StopSightTime = 1.9,
+		LoadIn = 1.5,
+		StopSightTime = 1.9,
 	},
 	[ACT_VM_DRAW] = {
 		Source = ACT_VM_DRAW_SILENCED,
@@ -63,14 +71,6 @@ SWEP.AnimOverride = {
 	},
 }
 
--- We were bought as special equipment, and we have an extra to give
-function SWEP:WasBought(buyer)
-	if IsValid(buyer) then -- probably already self:GetOwner()
-		buyer:GiveAmmo( 20, "Pistol" )
-	end
-end
-
--- Androfeda Rewrite
 SWEP.Firemodes = {
 	{
 		Count = 1,
