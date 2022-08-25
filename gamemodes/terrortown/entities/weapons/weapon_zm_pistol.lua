@@ -51,7 +51,7 @@ SWEP.AnimOverride = {
 SWEP.Firemodes = {
 	{
 		Count = 1,
-		Delay = 0.16,
+		Delay = 0.18,
 	}
 }
 

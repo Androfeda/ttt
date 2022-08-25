@@ -316,6 +316,8 @@ end
 
 local fonts_to_make = {
 	["Bahnschrift"] = {
+		10,
+		12,
 		18,
 		24,
 		36,
@@ -332,11 +334,32 @@ for aa, bb in pairs(fonts_to_make) do
 	end
 end
 
+local CLR_R = Color(255, 100, 0, 255)
 local CLR_W = Color(255, 255, 255, 255)
 local CLR_B = Color(0, 0, 0, 100)
+local CLR_RR = Color(255, 255, 255, 255)
+local MAT_DOT = Material( "attt/dot.png", "smooth" )
+
+local function ATTT_TextS(text, font, x, y, color, ax, ay)
+	local c = ScreenScale(1)
+
+	draw.SimpleText(text, font, x + (c*1), y + (c*1), CLR_B, ax, ay)
+	draw.SimpleText(text, font, x, y, color, ax, ay)
+end
+
+local function ATTT_RectS(x, y, w, h, t, clr)
+	local c = ScreenScale(1)
+
+	surface.SetDrawColor( CLR_B )
+	surface.DrawOutlinedRect(x + (c*1), y + (c*1), w, h, t)
+	surface.SetDrawColor( clr )
+	surface.DrawOutlinedRect(x, y, w, h, t)
+end
 
 local function ATTT_HUD(p)
 	local c = ScreenScale(1)
+	local w, h = ScrW(), ScrH()
+	local ow, oh = (c*8), (c*8)
 
 	-- Draw traitor state
 	local round_state = GAMEMODE.round_state
@@ -366,9 +389,97 @@ local function ATTT_HUD(p)
 		Role = "Detective"
 	end
 
-	draw.SimpleText(Role, "ATTT_Bahnschrift_18", (c*8) + (c*1), ScrH() - (c*48) + (c*1), CLR_B, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
-	draw.SimpleText(Role, "ATTT_Bahnschrift_18", (c*8), ScrH() - (c*48), CLR_W, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
-	draw.SimpleText(p:Health(), "ATTT_Bahnschrift_18", (c*8), ScrH() - (c*8), CLR_W, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+   -- Draw round time
+   local is_haste = HasteMode() and round_state == ROUND_ACTIVE
+   local is_traitor = p:IsActiveTraitor()
+
+   local endtime = GetGlobalFloat("ttt_round_end", 0) - CurTime()
+
+   local str_time = "00"
+   local font = "TimeLeft"
+   local color = CLR_W
+
+	-- Time displays differently depending on whether haste mode is on,
+	-- whether the player is traitor or not, and whether it is overtime.
+	if is_haste then
+		local hastetime = GetGlobalFloat("ttt_haste_end", 0) - CurTime()
+		if hastetime < 0 then
+			if (!is_traitor) or (math.ceil(CurTime()) % 7 <= 2) then
+				-- innocent or blinking "overtime"
+				str_time = "OVERTIME"
+			else
+			-- traitor and not blinking "overtime" right now, so standard endtime display
+				str_time  = util.SimpleTime(math.max(0, endtime), "%01i:%02i")
+				color = CLR_R
+			end
+		else
+			-- still in starting period
+			local t = hastetime
+			if is_traitor and math.ceil(CurTime()) % 6 < 2 then
+				t = endtime
+				color = CLR_R
+			end
+			str_time = util.SimpleTime(math.max(0, t), "%01i:%02i")
+		end
+	else
+		-- bog standard time when haste mode is off (or round not active)
+		str_time = util.SimpleTime(math.max(0, endtime), "%01i:%02i")
+	end
+
+	draw.RoundedBoxEx( (c*16), 0, h - (c*58), (c*118), (c*58), CLR_B, false, true, false, false )
+	draw.RoundedBoxEx( (c*16), 0, h - (c*44) - (c*14), (c*64), (c*14), col, false, true, false, true )
+	ATTT_TextS( p:Health(), "ATTT_Bahnschrift_24", (c*16), h - (c*8) - (c*9), CLR_W, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
+	ATTT_TextS( Role, "ATTT_Bahnschrift_12", (c*31), h - (c*45.5), CLR_W, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+	ATTT_TextS( str_time, "ATTT_Bahnschrift_12", (c*88), h - (c*45.5), color, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+	ATTT_RectS( ow, h - oh - (c*7), (c*100), (c*7), (c*1.5), CLR_W )
+	surface.SetDrawColor( CLR_W )
+	surface.DrawRect( ow, h - oh - (c*7), (c*100) * math.Clamp(p:Health()/p:GetMaxHealth(), 0, 1), (c*7) )
+
+	surface.SetMaterial( MAT_DOT )
+	surface.SetDrawColor( CLR_B )
+	surface.DrawTexturedRect( (c*9) + (c*1), h - (c*35) + (c*1), (c*5), (c*5) )
+	surface.SetDrawColor( CLR_W )
+	surface.DrawTexturedRect( (c*9), h - (c*35), (c*5), (c*5) )
+
+	local we = p:GetActiveWeapon()
+	if !IsValid(we) then we = false end
+	if !(WSWITCH and WSWITCH.Show) and we and we.Primary and we:Clip1() >= 0 then
+		draw.RoundedBoxEx( (c*16), w - (c*118), h - (c*44), (c*118), (c*44), CLR_B, true, false, false, false )
+		if we.GetFiremode and we:GetFiremode() then
+			draw.RoundedBoxEx( (c*16), w - (c*64), h - (c*44) - (c*14), (c*64), (c*14), CLR_B, true, false, false, false )
+			local fmn = we:GetFiremodeTable(we:GetFiremode())
+			if fmn.Count == 1 then
+				fmn = "Semi-auto"
+			elseif fmn.Count == math.huge then
+				fmn = "Automatic"
+			else
+				fmn = fmn.Count .. "-round burst"
+			end
+			ATTT_TextS( fmn, "ATTT_Bahnschrift_10", w - (c*31), h - (c*45.5), CLR_W, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+		end
+		ATTT_RectS( w - ow - (c*100), h - oh - (c*7), (c*100), (c*7), (c*1.5), CLR_W )
+		surface.SetDrawColor( CLR_W )
+		local meth = math.Clamp(we:Clip1()/we:GetMaxClip1(), 0, 1)
+		surface.DrawRect( w - ow + ((1-meth)*c*100) - (c*100), h - oh - (c*7), (c*100) * meth, (c*7) )
+
+		ATTT_TextS( we:Clip1(), "ATTT_Bahnschrift_24", w - (c*16), h - (c*8) - (c*9), CLR_W, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM )
+		local bow = surface.GetTextSize(we:Clip1())
+		ATTT_TextS( we:Ammo1(), "ATTT_Bahnschrift_12", w - (c*29) - bow, h - (c*8) - (c*13.9), CLR_W, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM )
+		ATTT_TextS( "/", "ATTT_Bahnschrift_12", w - (c*21) - bow, h - (c*8) - (c*14.1), CLR_W, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM )
+
+		if false then
+			local am = game.GetAmmoName( we:GetPrimaryAmmoType() )
+			am = refer[am]
+			if wover[we:GetClass()] then
+				am = wover[we:GetClass()]
+			end
+			surface.SetMaterial( am.Texture )
+			for i=1, we:Clip1() do
+				surface.DrawTexturedRect( 0, 0, (c*am.size), (c*am.size) )
+			end
+		end
+
+	end
 end
 
 -- Paints player status HUD element in the bottom left
@@ -417,7 +528,7 @@ function GM:HUDPaint()
 
    -- Draw bottom left info panel
    if hook.Call( "HUDShouldDraw", GAMEMODE, "TTTInfoPanel" ) then
-       InfoPaint(client)
+       -- InfoPaint(client)
 	   ATTT_HUD(client)
    end
 end

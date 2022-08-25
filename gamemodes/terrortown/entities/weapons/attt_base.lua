@@ -143,8 +143,10 @@ function SWEP:SwitchFiremode(prev)
 	if #self.Firemodes < nextfm then
 		nextfm = 1
 	end
-	self:GetOwner():ChatPrint("Selected " .. self:GetFiremodeName(nextfm))
-	self:SetFiremode(nextfm)
+	if self:GetFiremode() != nextfm then
+		self:SetFiremode(nextfm)
+		self:EmitSound("weapons/smg1/switch_single.wav", 60, 100, 0.5, CHAN_STATIC)
+	end
 end
 
 -- Globally define the best number
@@ -280,8 +282,8 @@ end
 
 function SWEP:DrawHUD()
 	if self.CustomDrawHUD then self:CustomDrawHUD() end
-	draw.SimpleText( self:GetNWString("TestRange", "no data"), "Trebuchet24", ScrW()/2, ScrH()*0.75, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-	draw.SimpleText( self:GetNWString("TestDisp", "no data"), "Trebuchet24", ScrW()/2, ScrH()*0.8, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	-- draw.SimpleText( self:GetNWString("TestRange", "no data"), "Trebuchet24", ScrW()/2, ScrH()*0.75, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	-- draw.SimpleText( self:GetNWString("TestDisp", "no data"), "Trebuchet24", ScrW()/2, ScrH()*0.8, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 end
 
 -- No secondary
@@ -297,6 +299,14 @@ function SWEP:Reload()
 	end
 
 	if self:GetReloadingTime() > CurTime() then
+		return false
+	end
+
+	if self:GetOwner():KeyDown(IN_USE) then
+		if !self:GetFiremodeDebounce() then
+			self:SwitchFiremode()
+			self:SetFiremodeDebounce( true )
+		end
 		return false
 	end
 
@@ -358,6 +368,9 @@ function SWEP:Think()
 	end
 	if !self:GetOwner():KeyDown(IN_ATTACK) then
 		self:SetFiredLastShot(false)
+	end
+	if self:GetFiremodeDebounce() and !self:GetOwner():KeyDown(IN_RELOAD) then
+		self:SetFiremodeDebounce( false )
 	end
 
 	if self:GetOwner():GetInfoNum("ttt_a_toggleads", 0) == 0 then
