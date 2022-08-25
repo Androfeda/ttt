@@ -324,7 +324,6 @@ local fonts_to_make = {
 
 for aa, bb in pairs(fonts_to_make) do
 	for cc, dd in pairs(bb) do
-		print(aa, bb, cc, dd)
 		surface.CreateFont("ATTT_" .. aa .. "_" .. dd, {
 			font = aa,
 			size = ScreenScale(dd),
@@ -333,16 +332,43 @@ for aa, bb in pairs(fonts_to_make) do
 	end
 end
 
+local CLR_W = Color(255, 255, 255, 255)
+local CLR_B = Color(0, 0, 0, 100)
+
 local function ATTT_HUD(p)
 	local c = ScreenScale(1)
 
-	local Role = "Preparing"
-	if p.IsTraitor and p:IsTraitor() then
-		Role = "Traitor"
+	-- Draw traitor state
+	local round_state = GAMEMODE.round_state
+
+	local Role = nil
+	if round_state == ROUND_ACTIVE then
+		Role = p:GetRoleStringRaw()
+	else
+		Role = roundstate_string[round_state]
 	end
 
-	draw.SimpleText(Role, "ATTT_Bahnschrift_18", (c*8), ScrH() - (c*48), color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
-	draw.SimpleText(p:Health(), "ATTT_Bahnschrift_18", (c*8), ScrH() - (c*8), color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+	local col = color_white
+	if Role == "round_post" then
+		col = bg_colors.noround
+		Role = "Round over"
+	elseif Role == "round_prep" then
+		col = bg_colors.noround
+		Role = "Preparing"
+	elseif Role == "innocent" then
+		col = bg_colors.innocent
+		Role = "Innocent"
+	elseif Role == "traitor" then
+		col = bg_colors.traitor
+		Role = "Traitor"
+	elseif Role == "detective" then
+		col = bg_colors.detective
+		Role = "Detective"
+	end
+
+	draw.SimpleText(Role, "ATTT_Bahnschrift_18", (c*8) + (c*1), ScrH() - (c*48) + (c*1), CLR_B, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+	draw.SimpleText(Role, "ATTT_Bahnschrift_18", (c*8), ScrH() - (c*48), CLR_W, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
+	draw.SimpleText(p:Health(), "ATTT_Bahnschrift_18", (c*8), ScrH() - (c*8), CLR_W, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM)
 end
 
 -- Paints player status HUD element in the bottom left

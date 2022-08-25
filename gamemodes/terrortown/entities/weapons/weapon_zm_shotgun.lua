@@ -58,16 +58,16 @@ SWEP.AnimOverride = {
 SWEP.Firemodes = {
 	{
 		Count = 1,
-		Delay = 0.6,
+		Delay = 0.8,
 	}
 }
 
 SWEP.ShotgunReloading = true
 
-SWEP.DamageNear = 13
+SWEP.DamageNear = 10
 SWEP.DamageFar = 4
-SWEP.RangeNear = 10
-SWEP.RangeFar = 50
+SWEP.RangeNear = 4
+SWEP.RangeFar = 10
 
 SWEP.Pellets = 8
 
@@ -94,8 +94,8 @@ SWEP.RecoilSideDecay					= 10 -- how much recoil to remove per second
 SWEP.RecoilFlipChance					= ( 1 / 2 ) -- chance to flip recoil direction
 SWEP.RecoilADSMult						= ( 4 / 5 ) -- multiply shot recoil by this amount when ads'd
 
-SWEP.Dispersion							= 5
-SWEP.Dispersion_Move					= 2 -- at 200 hu/s
-SWEP.Dispersion_Air						= 2
+SWEP.Dispersion							= 7
+SWEP.Dispersion_Move					= 3 -- at 200 hu/s
+SWEP.Dispersion_Air						= 3
 SWEP.Dispersion_Crouch					= ( 4 / 5 )
 SWEP.Dispersion_Sights					= ( 4 / 5 )

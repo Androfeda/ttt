@@ -402,9 +402,14 @@ function SWEP:Think()
 		local movem = p:GetAbsVelocity():Length2D()
 		movem = math.TimeFraction( 100, 200, movem )
 		movem = math.Clamp( movem, 0, 1 )
-		self:SetDISP_Air( math.Approach( self:GetDISP_Air(), p:OnGround() and 0 or 1, FrameTime() / 0.2 ) )
-		self:SetDISP_Move( math.Approach( self:GetDISP_Move(), movem, FrameTime() / 0.2 ) )
+		self:SetDISP_Air( math.Approach( self:GetDISP_Air(), p:OnGround() and 0 or 1, FrameTime() / 0.15 ) )
+		self:SetDISP_Move( math.Approach( self:GetDISP_Move(), movem, FrameTime() / 0.15 ) )
 		self:SetDISP_Crouch( math.Approach( self:GetDISP_Crouch(), p:Crouching() and 1 or 0, FrameTime() / 0.4 ) )
+	end
+
+	if p and self:GetShotgunReloading() > 0 and p:KeyDown( IN_ATTACK ) then
+		self:SetShotgunReloading( ATTTSG_NO )
+		self:SendAnim( ACT_SHOTGUN_RELOAD_FINISH, "reload_finish" )
 	end
 
 	if self:GetShotgunReloading() == ATTTSG_START and self:GetReloadingTime() < CurTime() then
