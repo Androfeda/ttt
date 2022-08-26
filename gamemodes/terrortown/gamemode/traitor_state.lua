@@ -16,6 +16,7 @@ local function SendPlayerRoles()
    for k, v in ipairs(player.GetAll()) do
       net.Start("TTT_Role")
          net.WriteUInt(v:GetRole(), 2)
+         net.WriteUInt(v:GetRoleAdditive(), 4)
       net.Send(v)
    end
 end
@@ -23,7 +24,7 @@ end
 local function SendRoleListMessage(role, role_ids, ply_or_rf, role_a)
    net.Start("TTT_RoleList")
       net.WriteUInt(role, 2)
-      net.WriteUInt(role_a, 4)
+      net.WriteUInt(role_a or 0, 4)
 
       -- list contents
       local num_ids = #role_ids
@@ -36,7 +37,7 @@ local function SendRoleListMessage(role, role_ids, ply_or_rf, role_a)
    else net.Broadcast() end
 end
 
-local function SendRoleList(role, ply_or_rf, pred)
+local function SendRoleList(role, ply_or_rf, pred, role_a)
    local role_ids = {}
    for k, v in ipairs(player.GetAll()) do
       if v:IsRole(role) then
@@ -46,10 +47,7 @@ local function SendRoleList(role, ply_or_rf, pred)
       end
    end
 
-   SendRoleListMessage(role, role_ids, ply_or_rf, 0)
-end
-
-local function SendRoleList(role, ply_or_rf, pred)
+   SendRoleListMessage(role, role_ids, ply_or_rf, role_a or 0)
 end
 
 -- Tell traitors about other traitors
@@ -100,6 +98,7 @@ function SendRoleReset(ply_or_rf)
 
    net.Start("TTT_RoleList")
       net.WriteUInt(ROLE_INNOCENT, 2)
+      net.WriteUInt(0, 4)
 
       net.WriteUInt(#plys, 8)
       for k, v in ipairs(plys) do

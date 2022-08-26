@@ -447,9 +447,11 @@ local function ATTT_HUD(p)
 
 	draw.RoundedBoxEx( (c*16), 0, h - (c*58), (c*118), (c*58), CLR_B, false, true, false, false )
 	draw.RoundedBoxEx( (c*16), 0, h - (c*44) - (c*14), (c*64), (c*14), col, false, true, false, true )
-	surface.SetMaterial(MAT_TRI)
-	surface.SetDrawColor( cola )
-	surface.DrawTexturedRect( 0, h - (c*44) - (c*14), (c*59), (c*14) )
+	if RoleA then
+		surface.SetMaterial(MAT_TRI)
+		surface.SetDrawColor( cola )
+		surface.DrawTexturedRect( 0, h - (c*44) - (c*14), (c*59), (c*14) )
+	end
 	ATTT_TextS( RoleA or Role, "ATTT_Bahnschrift_12", (c*31), h - (c*45.5), CLR_W, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
 	ATTT_TextS( p:Health(), "ATTT_Bahnschrift_24", (c*16), h - (c*8) - (c*9), CLR_W, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
 	ATTT_TextS( str_time, str_font, (c*88), h - (c*51.5), color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )

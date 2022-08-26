@@ -184,6 +184,7 @@ net.Receive("TTT_Role", ReceiveRole)
 
 local function ReceiveRoleList()
    local role = net.ReadUInt(2)
+   local role_a = net.ReadUInt(4)
    local num_ids = net.ReadUInt(8)
 
    for i=1, num_ids do

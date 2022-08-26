@@ -867,6 +867,7 @@ function SelectRoles()
       end
 
       v:SetRole(ROLE_INNOCENT)
+      --v:SetRoleAdditive(math.random(0, 2))
    end
 
    -- determine how many of each role we want
