@@ -130,6 +130,7 @@ concommand.Add("_ttt_request_rolelist", request_rolelist)
 
 local function force_terror(ply)
    ply:SetRole(ROLE_INNOCENT)
+   ply:SetRoleAdditive(ROLE_A_NONE)
    ply:UnSpectate()
    ply:SetTeam(TEAM_TERROR)
 
@@ -144,6 +145,7 @@ concommand.Add("ttt_force_terror", force_terror, nil, nil, FCVAR_CHEAT)
 
 local function force_traitor(ply)
    ply:SetRole(ROLE_TRAITOR)
+   ply:SetRoleAdditive(ROLE_A_NONE)
 
    SendFullStateUpdate()
 end
@@ -151,12 +153,14 @@ concommand.Add("ttt_force_traitor", force_traitor, nil, nil, FCVAR_CHEAT)
 
 local function force_detective(ply)
    ply:SetRole(ROLE_DETECTIVE)
+   ply:SetRoleAdditive(ROLE_A_NONE)
 
    SendFullStateUpdate()
 end
 concommand.Add("ttt_force_detective", force_detective, nil, nil, FCVAR_CHEAT)
 
 local function force_a_none(ply)
+   ply:SetRole(ROLE_INNOCENT)
    ply:SetRoleAdditive(ROLE_A_NONE)
 
    SendFullStateUpdate()
@@ -164,6 +168,7 @@ end
 concommand.Add("ttt_force_a_none", force_a_none, nil, nil, FCVAR_CHEAT)
 
 local function force_a_survivalist(ply)
+   ply:SetRole(ROLE_INNOCENT)
    ply:SetRoleAdditive(ROLE_A_SURVIVALIST)
 
    SendFullStateUpdate()
@@ -171,6 +176,7 @@ end
 concommand.Add("ttt_force_a_survivalist", force_a_survivalist, nil, nil, FCVAR_CHEAT)
 
 local function force_a_phoenix(ply)
+   ply:SetRole(ROLE_INNOCENT)
    ply:SetRoleAdditive(ROLE_A_PHOENIX)
 
    SendFullStateUpdate()

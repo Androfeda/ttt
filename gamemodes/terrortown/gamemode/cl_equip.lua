@@ -134,8 +134,8 @@ local function DrawSelectedEquipment(pnl)
 end
 
 function PANEL:SelectPanel(pnl)
-   self.BaseClass.SelectPanel(self, pnl)
    if pnl then
+	self.BaseClass.SelectPanel(self, pnl)
       pnl.PaintOver = DrawSelectedEquipment
    end
 end
@@ -146,9 +146,19 @@ local SafeTranslate = LANG.TryTranslation
 
 local color_darkened = Color(255,255,255, 80)
 -- TODO: make set of global role colour defs, these are same as wepswitch
+
+local COL_TRAITOR		= Color(216, 51, 51)
+local COL_INNOCENT		= Color(63, 195, 63)
+local COL_DETECTIVE		= Color(32, 74, 171)
+local COL_NOROUND		= Color(100, 100, 100)
+
+local COL_SURVIVALIST	= Color(253, 161, 39)
+local COL_PHOENIX		= Color(107, 157, 243)
+
 local color_slot = {
-   [ROLE_TRAITOR]   = Color(180, 50, 40, 255),
-   [ROLE_DETECTIVE] = Color(50, 60, 180, 255)
+   [ROLE_TRAITOR]   = COL_TRAITOR,
+   [ROLE_DETECTIVE] = COL_DETECTIVE,
+   [ROLE_A_SURVIVALIST + 10] = COL_SURVIVALIST
 }
 
 local fieldstbl = {"name", "type", "desc"}
@@ -156,9 +166,13 @@ local fieldstbl = {"name", "type", "desc"}
 local eqframe = nil
 local function TraitorMenuPopup()
    local ply = LocalPlayer()
-   if not IsValid(ply) or not ply:IsActiveSpecial() then
+   if !IsValid(ply) then
       return
    end
+
+	if !(ply:IsActiveSpecial() or ply:IsRole_A(ROLE_A_SURVIVALIST)) then
+		return
+	end
 
    -- Close any existing traitor menu
    if eqframe and IsValid(eqframe) then eqframe:Close() end
@@ -253,7 +267,12 @@ local function TraitorMenuPopup()
          if ItemIsWeapon(item) then
             local slot = vgui.Create("SimpleIconLabelled")
             slot:SetIcon("vgui/ttt/slotcap")
-            slot:SetIconColor(color_slot[ply:GetRole()] or COLOR_GREY)
+			local coool = color_slot[ply:GetRole()]
+			print(ply:GetRoleAdditive())
+			if ply:IsRole(ROLE_INNOCENT) and ply:GetRoleAdditive() > ROLE_A_NONE then
+				coool = color_slot[ply:GetRoleAdditive() + 10]
+			end
+            slot:SetIconColor(coool or COLOR_GREY)
             slot:SetIconSize(16)
 
             slot:SetIconText(item.slot)
@@ -375,24 +394,26 @@ local function TraitorMenuPopup()
    hook.Run("TTTEquipmentTabs", dsheet)
 
 
-   -- couple panelselect with info
-   dlist.OnActivePanelChanged = function(self, _, new)
-                                   for k,v in pairs(new.item) do
-                                      if dfields[k] then
-                                         dfields[k]:SetText(SafeTranslate(v))
-                                         dfields[k]:SizeToContents()
-                                      end
-                                   end
+	-- couple panelselect with info
+	dlist.OnActivePanelChanged = function(self, _, new)
+		if new then
+			for k,v in pairs(new.item) do
+				if dfields[k] then
+					dfields[k]:SetText(SafeTranslate(v))
+					dfields[k]:SizeToContents()
+				end
+			end
 
-                                   -- Trying to force everything to update to
-                                   -- the right size is a giant pain, so just
-                                   -- force a good size.
-                                   dfields.desc:SetTall(70)
+			-- Trying to force everything to update to
+			-- the right size is a giant pain, so just
+			-- force a good size.
+			dfields.desc:SetTall(70)
 
-                                   can_order = update_preqs(new.item)
+			can_order = update_preqs(new.item)
 
-                                   dconfirm:SetDisabled(not can_order)
-                                end
+			dconfirm:SetDisabled(not can_order)
+		end
+	end
 
    -- select first
    dlist:SelectPanel(to_select or dlist:GetItems()[1])
@@ -440,7 +461,7 @@ concommand.Add("ttt_cl_traitorpopup_close", ForceCloseTraitorMenu)
 
 function GM:OnContextMenuOpen()
    local r = GetRoundState()
-   if r == ROUND_ACTIVE and not (LocalPlayer():GetTraitor() or LocalPlayer():GetDetective()) then
+   if r == ROUND_ACTIVE and not (LocalPlayer():GetTraitor() or LocalPlayer():GetDetective() or LocalPlayer():IsRole_A(ROLE_A_SURVIVALIST)) then
       return
    elseif r == ROUND_POST or r == ROUND_PREP then
       CLSCORE:Toggle()

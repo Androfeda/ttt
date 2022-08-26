@@ -40,6 +40,8 @@ local mat_dir = "vgui/ttt/"
 -- want a new line to start.
 
 EquipmentItems = {
+   [ROLE_INNOCENT] = { -- This is needed or it'll throw a tantrum
+   },
    [ROLE_DETECTIVE] = {
 
       -- body armor

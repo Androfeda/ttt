@@ -337,7 +337,7 @@ end
 local function OrderEquipment(ply, cmd, args)
    if not IsValid(ply) or #args != 1 then return end
 
-   if not (ply:IsActiveTraitor() or ply:IsActiveDetective()) then return end
+   if not (ply:IsActiveTraitor() or ply:IsActiveDetective() or ply:IsActiveRole_A(ROLE_A_SURVIVALIST)) then return end
 
    -- no credits, can't happen when buying through menu as button will be off
    if ply:GetCredits() < 1 then return end
