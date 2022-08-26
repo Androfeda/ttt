@@ -78,6 +78,14 @@ CreateConVar("ttt_detective_max", "32")
 CreateConVar("ttt_detective_min_players", "8")
 CreateConVar("ttt_detective_karma_min", "600")
 
+CreateConVar("ttt_a_ad_survivalist_pct", "0.13", FCVAR_NOTIFY)
+CreateConVar("ttt_a_ad_survivalist_max", "32")
+CreateConVar("ttt_a_ad_survivalist_min_players", "8")
+
+CreateConVar("ttt_a_ad_phoenix_pct", "0.13", FCVAR_NOTIFY)
+CreateConVar("ttt_a_ad_phoenix_max", "32")
+CreateConVar("ttt_a_ad_phoenix_min_players", "8")
+
 
 -- Traitor credits
 CreateConVar("ttt_credits_starting", "2")
@@ -867,6 +875,7 @@ function SelectRoles()
       end
 
       v:SetRole(ROLE_INNOCENT)
+      v:SetRoleAdditive(ROLE_A_NONE)
       --v:SetRoleAdditive(math.random(0, 2))
    end
 
