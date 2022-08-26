@@ -5,11 +5,26 @@ local GetPTranslation = LANG.GetParamTranslation
 
 ---- Round start
 
-local function GetTextForRole(role)
+local function GetTextForRole(role, role_a)
    local menukey = Key("+menu_context", "C")
 
-   if role == ROLE_INNOCENT then
-      return GetTranslation("info_popup_innocent")
+	if role == ROLE_INNOCENT then
+		if role_a == ROLE_A_SURVIVALIST then
+			return [[
+You are a Survivalist! Terrorist HQ has set aside extra resources for you to help find the traitors.
+Use them to assist your fellow Terrorists, but be careful:
+If the traitors catch wind of who you are, they might be willing to take you down first!
+
+Watch your back and work with your comrades to get out of this alive!]]
+		elseif role_a == ROLE_A_PHOENIX then
+			return [[
+You are an innocent Terrorist, and a Phoenix!
+You will come back from the dead after you die.
+
+Watch your back and work with your comrades to get out of this.. double alive!]]
+		else
+			return GetTranslation("info_popup_innocent")
+		end
 
    elseif role == ROLE_DETECTIVE then
       return GetPTranslation("info_popup_detective", {menukey = Key("+menu_context", "C")})
@@ -62,7 +77,7 @@ local function RoundStartPopup()
                   end
 
 
-   local text = GetTextForRole(LocalPlayer():GetRole())
+   local text = GetTextForRole(LocalPlayer():GetRole(), LocalPlayer():GetRoleAdditive() or 0)
 
    local dtext = vgui.Create( "DLabel", dframe )
    dtext:SetFont("TabLarge")

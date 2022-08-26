@@ -901,6 +901,7 @@ function SelectRoles()
    local choice_count = #choices
    local traitor_count = GetTraitorCount(choice_count)
    local det_count = GetDetectiveCount(choice_count)
+   local survivalist_count = GetSurvivalistCount(choice_count)
 
    if choice_count == 0 then return end
 
@@ -962,6 +963,25 @@ function SelectRoles()
          end
 
          table.remove(choices, pick)
+      end
+   end
+
+   -- got some choices left? lets get a survivalist in
+   local survivalist_s = 0
+   while (survivalist_s < survivalist_count) and (#choices >= 1) do
+      -- select random index in choices table
+      local pick = math.random(1, #choices)
+
+      -- the player we consider
+      local pply = choices[pick]
+
+      -- make this guy traitor if he was not a traitor last time, or if he makes
+      -- a roll
+      if IsValid(pply) then
+         pply:SetRoleAdditive(ROLE_A_SURVIVALIST)
+
+         table.remove(choices, pick)
+         survivalist_s = survivalist_s + 1
       end
    end
 
