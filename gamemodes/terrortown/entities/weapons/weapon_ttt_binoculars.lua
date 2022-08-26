@@ -61,6 +61,8 @@ function SWEP:SetupDataTables()
    self:DTVar("Float", 0, "start_time")
    self:DTVar("Int",   1, "zoom")
 
+   self.dt.zoom = 1
+
    return self.BaseClass.SetupDataTables(self)
 end
 
@@ -95,7 +97,7 @@ end
 function SWEP:SetZoom(level)
    if SERVER then
       self.dt.zoom = level
-      self:GetOwner():SetFOV(self.ZoomLevels[level], 0.3)
+      self:GetOwner():SetFOV(self.ZoomLevels[level], 0.21)
 
       self:GetOwner():DrawViewModel(false)
    end
