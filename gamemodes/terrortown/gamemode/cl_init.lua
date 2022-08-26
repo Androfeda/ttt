@@ -175,10 +175,20 @@ local function ReceiveRole()
    client:SetRole(role)
    client:SetRoleAdditive(role_a)
 
-   Msg("You are: ")
-   if client:IsTraitor() then MsgN("TRAITOR")
-   elseif client:IsDetective() then MsgN("DETECTIVE")
-   else MsgN("INNOCENT") end
+	Msg("You are: ")
+	if client:IsTraitor() then MsgN("TRAITOR")
+	elseif client:IsDetective() then MsgN("DETECTIVE")
+	else
+		if client:IsRole_A(ROLE_A_NONE) then
+			MsgN("INNOCENT")
+		elseif client:IsRole_A(ROLE_A_SURVIVALIST) then
+			MsgN("SURVIVALIST (INNOCENT)")
+		elseif client:IsRole_A(ROLE_A_PHOENIX) then
+			MsgN("PHOENIX (INNOCENT)")
+		else
+			MsgN("UNKNOWN BUT OTHERWISE INNOCENT")
+		end
+	end
 end
 net.Receive("TTT_Role", ReceiveRole)
 

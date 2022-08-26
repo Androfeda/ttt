@@ -341,10 +341,15 @@ local CLR_W = Color(255, 255, 255, 255)
 local CLR_B = Color(0, 0, 0, 100)
 local CLR_RR = Color(255, 255, 255, 255)
 local MAT_DOT = Material( "attt/dot.png", "smooth" )
-local MAT_TRI = Material( "attt/tri.png", "smooth" )
+local MAT_TRI = Material( "attt/tri.png", "" )
 
-local COL_SURVIVALIST = Color(253, 161, 39)
-local COL_PHOENIX = Color(90, 230, 200)
+local COL_TRAITOR		= Color(216, 51, 51)
+local COL_INNOCENT		= Color(63, 195, 63)
+local COL_DETECTIVE		= Color(32, 74, 171)
+local COL_NOROUND		= Color(100, 100, 100)
+
+local COL_SURVIVALIST	= Color(253, 161, 39)
+local COL_PHOENIX		= Color(107, 157, 243)
 
 local function ATTT_TextS(text, font, x, y, color, ax, ay)
 	local c = ScreenScale(1)
@@ -379,15 +384,15 @@ local function ATTT_HUD(p)
 	end
 
 	local col = color_white
-	local cola = color_white
+	local cola
 	if Role == "round_post" then
-		col = bg_colors.noround
+		col = COL_NOROUND
 		Role = "Round over"
 	elseif Role == "round_prep" then
-		col = bg_colors.noround
+		col = COL_NOROUND
 		Role = "Preparing"
 	elseif Role == "innocent" then
-		col = bg_colors.innocent
+		col = COL_INNOCENT
 		Role = "Innocent"
 		local ra = p:GetRoleAdditive()
 		if ra == ROLE_A_NONE then
@@ -399,10 +404,10 @@ local function ATTT_HUD(p)
 			cola = COL_PHOENIX
 		end
 	elseif Role == "traitor" then
-		col = bg_colors.traitor
+		col = COL_TRAITOR
 		Role = "Traitor"
 	elseif Role == "detective" then
-		col = bg_colors.detective
+		col = COL_DETECTIVE
 		Role = "Detective"
 	end
 
@@ -446,13 +451,15 @@ local function ATTT_HUD(p)
 	end
 
 	draw.RoundedBoxEx( (c*16), 0, h - (c*58), (c*118), (c*58), CLR_B, false, true, false, false )
-	draw.RoundedBoxEx( (c*16), 0, h - (c*44) - (c*14), (c*64), (c*14), col, false, true, false, true )
+	draw.RoundedBoxEx( (c*16), 0, h - (c*44) - (c*14), (c*64), (c*14), cola or col, false, true, false, true )
+	
 	if RoleA then
-		surface.SetMaterial(MAT_TRI)
-		surface.SetDrawColor( cola )
-		surface.DrawTexturedRect( 0, h - (c*44) - (c*14), (c*59), (c*14) )
+		surface.SetMaterial( MAT_TRI )
+		surface.SetDrawColor( col )
+		surface.DrawTexturedRect( 0, h - (c*44) - (c*14), (c*14), (c*14) )
 	end
 	ATTT_TextS( RoleA or Role, "ATTT_Bahnschrift_12", (c*31), h - (c*45.5), CLR_W, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+
 	ATTT_TextS( p:Health(), "ATTT_Bahnschrift_24", (c*16), h - (c*8) - (c*9), CLR_W, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
 	ATTT_TextS( str_time, str_font, (c*88), h - (c*51.5), color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 	ATTT_RectS( ow, h - oh - (c*7), (c*100), (c*7), (c*1.5), CLR_W )
