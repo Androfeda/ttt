@@ -61,8 +61,8 @@ SWEP.Firemodes = {
 	}
 }
 
-SWEP.DamageNear = 23
-SWEP.DamageFar = 20
+SWEP.DamageNear = 19
+SWEP.DamageFar = 14
 SWEP.RangeNear = 20
 SWEP.RangeFar = 50
 
@@ -80,17 +80,17 @@ SWEP.IronsightPos = {
 --
 -- Recoil
 --
-SWEP.RecoilUp							= 1 -- degrees punched
+SWEP.RecoilUp							= 2 -- degrees punched
 SWEP.RecoilUpDrift						= 0.2 -- how much will be smooth recoil
 SWEP.RecoilUpDecay						= 10 -- how much recoil to remove per second
-SWEP.RecoilSide							= 1 -- degrees punched, in either direction (-100% to 100%)
-SWEP.RecoilSideDrift					= 0.5 -- how much will be smooth recoil
+SWEP.RecoilSide							= 1.5 -- degrees punched, in either direction (-100% to 100%)
+SWEP.RecoilSideDrift					= 0.7 -- how much will be smooth recoil
 SWEP.RecoilSideDecay					= 10 -- how much recoil to remove per second
 SWEP.RecoilFlipChance					= ( 1 / 2 ) -- chance to flip recoil direction
 SWEP.RecoilADSMult						= ( 1 / 3 ) -- multiply shot recoil by this amount when ads'd
 
-SWEP.Dispersion							= 0.7
+SWEP.Dispersion							= 1
 SWEP.Dispersion_Move					= 1.1 -- at 200 hu/s
 SWEP.Dispersion_Air						= 1.1
 SWEP.Dispersion_Crouch					= ( 2 / 3 )
-SWEP.Dispersion_Sights					= ( 2 / 3 )
+SWEP.Dispersion_Sights					= ( 1 / 3 )

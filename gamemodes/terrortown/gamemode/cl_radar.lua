@@ -198,6 +198,8 @@ function RADAR:Draw(client)
       DrawTarget(tgt, 24, 0)
    end
 
+   wrapradar = self
+   if true then return end -- Androfeda
    -- Time until next scan
    surface.SetFont("TabLarge")
    surface.SetTextColor(255, 0, 0, 230)

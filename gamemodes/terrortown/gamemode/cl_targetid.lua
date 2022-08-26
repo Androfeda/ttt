@@ -238,6 +238,7 @@ function GM:HUDDrawTargetID()
    local x_orig = ScrW() / 2.0
    local x = x_orig
    local y = ScrH() / 2.0
+   local c = ScreenScale(1)
 
    local w, h = 0,0 -- text width/height, reused several times
 
@@ -252,8 +253,8 @@ function GM:HUDDrawTargetID()
       surface.DrawTexturedRect(x-32, y-32, 64, 64)
    end
 
-   y = y + 30
-   local font = "TargetID"
+   y = y + (c*10)
+   local font = "ATTT_Bahnschrift_12"
    surface.SetFont( font )
 
    -- Draw main title, ie. nickname
@@ -274,7 +275,7 @@ function GM:HUDDrawTargetID()
          surface.DrawTexturedRect(x + w + 5, y, 16, 16)
       end
 
-      y = y + h + 4
+      y = y + (c*11)
    end
 
    -- Minimalist target ID only draws a health-coloured nickname, no hints, no
@@ -293,7 +294,7 @@ function GM:HUDDrawTargetID()
    else
       return
    end
-   font = "TargetIDSmall2"
+   font = "ATTT_Bahnschrift_8"
 
    surface.SetFont( font )
    w, h = surface.GetTextSize( text )
@@ -302,17 +303,18 @@ function GM:HUDDrawTargetID()
    draw.SimpleText( text, font, x+1, y+1, COLOR_BLACK )
    draw.SimpleText( text, font, x, y, clr )
 
-   font = "TargetIDSmall"
+   font = "ATTT_Bahnschrift_8"
    surface.SetFont( font )
 
    -- Draw second subtitle: karma
-   if ent:IsPlayer() and KARMA.IsEnabled() then
+   -- Don't actually lol
+   if false and ent:IsPlayer() and KARMA.IsEnabled() then
       text, clr = util.KarmaToString(ent:GetBaseKarma())
 
       text = L[text]
 
       w, h = surface.GetTextSize( text )
-      y = y + h + 5
+      y = y + (c*8)
       x = x_orig - w / 2
 
       draw.SimpleText( text, font, x+1, y+1, COLOR_BLACK )
@@ -329,7 +331,7 @@ function GM:HUDDrawTargetID()
 
       w, h = surface.GetTextSize(text)
       x = x_orig - w / 2
-      y = y + h + 5
+      y = y + (c*8)
       draw.SimpleText( text, font, x+1, y+1, COLOR_BLACK )
       draw.SimpleText( text, font, x, y, COLOR_LGRAY )
    end
@@ -353,7 +355,7 @@ function GM:HUDDrawTargetID()
    if text then
       w, h = surface.GetTextSize( text )
       x = x_orig - w / 2
-      y = y + h + 5
+      y = y + (c*8)
 
       draw.SimpleText( text, font, x+1, y+1, COLOR_BLACK )
       draw.SimpleText( text, font, x, y, clr )

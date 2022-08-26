@@ -316,6 +316,8 @@ end
 
 local fonts_to_make = {
 	["Bahnschrift"] = {
+		6,
+		8,
 		10,
 		12,
 		18,
@@ -396,6 +398,7 @@ local function ATTT_HUD(p)
    local endtime = GetGlobalFloat("ttt_round_end", 0) - CurTime()
 
    local str_time = "00"
+   local str_font = "ATTT_Bahnschrift_12"
    local font = "TimeLeft"
    local color = CLR_W
 
@@ -404,11 +407,12 @@ local function ATTT_HUD(p)
 	if is_haste then
 		local hastetime = GetGlobalFloat("ttt_haste_end", 0) - CurTime()
 		if hastetime < 0 then
-			if (!is_traitor) or (math.ceil(CurTime()) % 7 <= 2) then
-				-- innocent or blinking "overtime"
+			if (!is_traitor) then
+				-- innocent
 				str_time = "OVERTIME"
+				str_font = "ATTT_Bahnschrift_8"
 			else
-			-- traitor and not blinking "overtime" right now, so standard endtime display
+				-- traitor
 				str_time  = util.SimpleTime(math.max(0, endtime), "%01i:%02i")
 				color = CLR_R
 			end
@@ -430,7 +434,7 @@ local function ATTT_HUD(p)
 	draw.RoundedBoxEx( (c*16), 0, h - (c*44) - (c*14), (c*64), (c*14), col, false, true, false, true )
 	ATTT_TextS( p:Health(), "ATTT_Bahnschrift_24", (c*16), h - (c*8) - (c*9), CLR_W, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
 	ATTT_TextS( Role, "ATTT_Bahnschrift_12", (c*31), h - (c*45.5), CLR_W, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
-	ATTT_TextS( str_time, "ATTT_Bahnschrift_12", (c*88), h - (c*45.5), color, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+	ATTT_TextS( str_time, str_font, (c*88), h - (c*51.5), color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 	ATTT_RectS( ow, h - oh - (c*7), (c*100), (c*7), (c*1.5), CLR_W )
 	surface.SetDrawColor( CLR_W )
 	surface.DrawRect( ow, h - oh - (c*7), (c*100) * math.Clamp(p:Health()/p:GetMaxHealth(), 0, 1), (c*7) )
@@ -467,6 +471,34 @@ local function ATTT_HUD(p)
 		ATTT_TextS( we:Ammo1(), "ATTT_Bahnschrift_12", w - (c*29) - bow, h - (c*8) - (c*13.9), CLR_W, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM )
 		ATTT_TextS( "/", "ATTT_Bahnschrift_12", w - (c*21) - bow, h - (c*8) - (c*14.1), CLR_W, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM )
 
+	end
+end
+
+-- Radar, disguised, DNA
+local MAX_CHARGE = 1250
+local function ATTT_HUD_Extras(p)
+	local c = ScreenScale(1)
+	local y = (c*10)
+	local w, h = ScrW(), ScrH()
+
+	if p:GetNWBool("disguised", false) then
+		ATTT_TextS( "Disguise enabled! Your name is hidden.", "ATTT_Bahnschrift_8", w/2, h - y, CLR_W, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		y = y + (c*10)
+	end
+
+	local radar = (wrapradar and wrapradar.enable and p:IsActiveSpecial())
+	if radar then
+		local remaining = math.max(0, wrapradar.endtime - CurTime())
+		ATTT_TextS( "Radar ready in " .. util.SimpleTime(remaining, "%01i:%02i"), "ATTT_Bahnschrift_8", w/2, h - y, CLR_W, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		y = y + (c*10)
+	end
+
+	local tester = p:GetWeapon("weapon_ttt_wtester")
+	if !IsValid(tester) then tester = false end
+	if tester then
+		--math.min(MAX_CHARGE, tester:GetCharge())
+		ATTT_TextS( "DNA: " .. math.Round(tester:GetCharge()/1250*100) .. "%", "ATTT_Bahnschrift_8", w/2, h - y, CLR_W, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		y = y + (c*10)
 	end
 end
 
@@ -519,6 +551,11 @@ function GM:HUDPaint()
        -- InfoPaint(client)
 	   ATTT_HUD(client)
    end
+
+	-- Fesiug's extras
+	do
+		ATTT_HUD_Extras(client)
+	end
 end
 
 -- Hide the standard HUD stuff

@@ -35,6 +35,7 @@ function DISGUISE.CreateMenu(parent)
 end
 
 function DISGUISE.Draw(client)
+	if true then return end -- Androfeda
    if (not client) or (not client:IsActiveTraitor()) then return end
    if not client:GetNWBool("disguised", false) then return end
 

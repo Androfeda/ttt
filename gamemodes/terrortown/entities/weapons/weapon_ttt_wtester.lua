@@ -29,14 +29,14 @@ SWEP.WorldModel            = "models/props_lab/huladoll.mdl"
 SWEP.Primary.ClipSize      = -1
 SWEP.Primary.DefaultClip   = -1
 SWEP.Primary.Automatic     = false
-SWEP.Primary.Delay         = 1
+SWEP.Primary.Delay         = 0.3
 SWEP.Primary.Ammo          = "none"
 
 SWEP.Secondary.ClipSize    = -1
 SWEP.Secondary.DefaultClip = -1
 SWEP.Secondary.Automatic   = false
 SWEP.Secondary.Ammo        = "none"
-SWEP.Secondary.Delay       = 2
+SWEP.Secondary.Delay       = 0.3
 
 SWEP.Kind                  = WEAPON_ROLE
 SWEP.CanBuy                = nil -- no longer a buyable thing
@@ -785,6 +785,8 @@ function SWEP:Deploy()
       self:GetOwner():DrawViewModel(false)
       self:GetOwner().scanner_weapon = self
    end
+   self:SetNextPrimaryFire( CurTime() )
+   self:SetNextSecondaryFire( CurTime() )
    return true
 end
 
