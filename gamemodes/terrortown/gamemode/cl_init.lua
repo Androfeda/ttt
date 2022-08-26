@@ -163,12 +163,17 @@ GM.TTTEndRound = PlaySoundCue
 local function ReceiveRole()
    local client = LocalPlayer()
    local role = net.ReadUInt(2)
+   local role_a = net.ReadUInt(4)
+
+   print(role)
+   print(role_a)
 
    -- after a mapswitch, server might have sent us this before we are even done
    -- loading our code
    if not client.SetRole then return end
 
    client:SetRole(role)
+   client:SetRoleAdditive(role_a)
 
    Msg("You are: ")
    if client:IsTraitor() then MsgN("TRAITOR")

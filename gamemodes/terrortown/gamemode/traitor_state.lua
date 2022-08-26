@@ -20,9 +20,10 @@ local function SendPlayerRoles()
    end
 end
 
-local function SendRoleListMessage(role, role_ids, ply_or_rf)
+local function SendRoleListMessage(role, role_ids, ply_or_rf, role_a)
    net.Start("TTT_RoleList")
       net.WriteUInt(role, 2)
+      net.WriteUInt(role_a, 4)
 
       -- list contents
       local num_ids = #role_ids
@@ -45,7 +46,10 @@ local function SendRoleList(role, ply_or_rf, pred)
       end
    end
 
-   SendRoleListMessage(role, role_ids, ply_or_rf)
+   SendRoleListMessage(role, role_ids, ply_or_rf, 0)
+end
+
+local function SendRoleList(role, ply_or_rf, pred)
 end
 
 -- Tell traitors about other traitors
@@ -70,13 +74,13 @@ function SendInnocentList(ply_or_rf)
 
    -- traitors get actual innocent, so they do not reset their traitor mates to
    -- innocence
-   SendRoleListMessage(ROLE_INNOCENT, inno_ids, GetTraitorFilter())
+   SendRoleListMessage(ROLE_INNOCENT, inno_ids, GetTraitorFilter(), 0)
 
    -- detectives and innocents get an expanded version of the truth so that they
    -- reset everyone who is not detective
    table.Add(inno_ids, traitor_ids)
    table.Shuffle(inno_ids)
-   SendRoleListMessage(ROLE_INNOCENT, inno_ids, GetInnocentFilter())
+   SendRoleListMessage(ROLE_INNOCENT, inno_ids, GetInnocentFilter(), 0)
 end
 
 function SendConfirmedTraitors(ply_or_rf)
@@ -152,6 +156,27 @@ local function force_detective(ply)
    SendFullStateUpdate()
 end
 concommand.Add("ttt_force_detective", force_detective, nil, nil, FCVAR_CHEAT)
+
+local function force_a_none(ply)
+   ply:SetRoleAdditive(ROLE_A_NONE)
+
+   SendFullStateUpdate()
+end
+concommand.Add("ttt_force_a_none", force_a_none, nil, nil, FCVAR_CHEAT)
+
+local function force_a_survivalist(ply)
+   ply:SetRoleAdditive(ROLE_A_SURVIVALIST)
+
+   SendFullStateUpdate()
+end
+concommand.Add("ttt_force_a_survivalist", force_a_survivalist, nil, nil, FCVAR_CHEAT)
+
+local function force_a_phoenix(ply)
+   ply:SetRoleAdditive(ROLE_A_PHOENIX)
+
+   SendFullStateUpdate()
+end
+concommand.Add("ttt_force_a_phoenix", force_a_phoenix, nil, nil, FCVAR_CHEAT)
 
 
 local function force_spectate(ply, cmd, arg)

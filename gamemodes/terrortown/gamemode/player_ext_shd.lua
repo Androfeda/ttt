@@ -9,6 +9,7 @@ function plymeta:IsTerror() return self:Team() == TEAM_TERROR end
 function plymeta:IsSpec() return self:Team() == TEAM_SPEC end
 
 AccessorFunc(plymeta, "role", "Role", FORCE_NUMBER)
+AccessorFunc(plymeta, "roleadditive", "RoleAdditive", FORCE_NUMBER)
 
 -- Role access
 function plymeta:GetTraitor() return self:GetRole() == ROLE_TRAITOR end
@@ -30,6 +31,9 @@ function plymeta:IsActiveRole(role) return self:IsRole(role) and self:IsActive()
 function plymeta:IsActiveTraitor() return self:IsActiveRole(ROLE_TRAITOR) end
 function plymeta:IsActiveDetective() return self:IsActiveRole(ROLE_DETECTIVE) end
 function plymeta:IsActiveSpecial() return self:IsSpecial() and self:IsActive() end
+
+function plymeta:IsRole_A(role) return self:GetRoleAdditive() == role end
+function plymeta:IsActiveRole_A(role) return self:GetRoleAdditive() == role and self:IsActive() end
 
 local role_strings = {
    [ROLE_TRAITOR]   = "traitor",

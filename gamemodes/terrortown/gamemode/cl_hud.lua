@@ -341,6 +341,10 @@ local CLR_W = Color(255, 255, 255, 255)
 local CLR_B = Color(0, 0, 0, 100)
 local CLR_RR = Color(255, 255, 255, 255)
 local MAT_DOT = Material( "attt/dot.png", "smooth" )
+local MAT_TRI = Material( "attt/tri.png", "smooth" )
+
+local COL_SURVIVALIST = Color(253, 161, 39)
+local COL_PHOENIX = Color(90, 230, 200)
 
 local function ATTT_TextS(text, font, x, y, color, ax, ay)
 	local c = ScreenScale(1)
@@ -367,6 +371,7 @@ local function ATTT_HUD(p)
 	local round_state = GAMEMODE.round_state
 
 	local Role = nil
+	local RoleA = nil
 	if round_state == ROUND_ACTIVE then
 		Role = p:GetRoleStringRaw()
 	else
@@ -374,6 +379,7 @@ local function ATTT_HUD(p)
 	end
 
 	local col = color_white
+	local cola = color_white
 	if Role == "round_post" then
 		col = bg_colors.noround
 		Role = "Round over"
@@ -383,6 +389,15 @@ local function ATTT_HUD(p)
 	elseif Role == "innocent" then
 		col = bg_colors.innocent
 		Role = "Innocent"
+		local ra = p:GetRoleAdditive()
+		if ra == ROLE_A_NONE then
+		elseif ra == ROLE_A_SURVIVALIST then
+			RoleA = "Survivalist"
+			cola = COL_SURVIVALIST
+		elseif ra == ROLE_A_PHOENIX then
+			RoleA = "Phoenix"
+			cola = COL_PHOENIX
+		end
 	elseif Role == "traitor" then
 		col = bg_colors.traitor
 		Role = "Traitor"
@@ -432,8 +447,11 @@ local function ATTT_HUD(p)
 
 	draw.RoundedBoxEx( (c*16), 0, h - (c*58), (c*118), (c*58), CLR_B, false, true, false, false )
 	draw.RoundedBoxEx( (c*16), 0, h - (c*44) - (c*14), (c*64), (c*14), col, false, true, false, true )
+	surface.SetMaterial(MAT_TRI)
+	surface.SetDrawColor( cola )
+	surface.DrawTexturedRect( 0, h - (c*44) - (c*14), (c*59), (c*14) )
+	ATTT_TextS( RoleA or Role, "ATTT_Bahnschrift_12", (c*31), h - (c*45.5), CLR_W, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
 	ATTT_TextS( p:Health(), "ATTT_Bahnschrift_24", (c*16), h - (c*8) - (c*9), CLR_W, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM )
-	ATTT_TextS( Role, "ATTT_Bahnschrift_12", (c*31), h - (c*45.5), CLR_W, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
 	ATTT_TextS( str_time, str_font, (c*88), h - (c*51.5), color, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 	ATTT_RectS( ow, h - oh - (c*7), (c*100), (c*7), (c*1.5), CLR_W )
 	surface.SetDrawColor( CLR_W )

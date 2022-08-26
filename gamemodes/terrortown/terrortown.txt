@@ -1,4 +1,4 @@
-"terrortown_androfeda"
+"terrortown"
 {
 	"base"		"base"
 	"title"		"Trouble in Terrorist Town"

@@ -18,6 +18,11 @@ ROLE_TRAITOR   = 1
 ROLE_DETECTIVE = 2
 ROLE_NONE = ROLE_INNOCENT
 
+-- Player additive roles
+ROLE_A_NONE        = 0
+ROLE_A_SURVIVALIST = 1
+ROLE_A_PHOENIX     = 2
+
 -- Game event log defs
 EVENT_KILL        = 1
 EVENT_SPAWN       = 2
