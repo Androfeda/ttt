@@ -566,6 +566,7 @@ function SWEP:GetViewModelPosition(pos, ang)
 	do -- ironsighting
 		local b_pos, b_ang = Vector(), Angle()
 		local si = self:GetSightDelta()
+		self.SwayScale = 1-si
 
 		if self.IronsightPos then
 			b_pos:Add( self.IronsightPos.Pos )

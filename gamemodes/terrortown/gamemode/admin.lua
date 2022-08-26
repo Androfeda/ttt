@@ -33,9 +33,26 @@ function PrintTraitors(ply)
       local ps = player.GetAll()
       table.sort(ps, TraitorSort)
 
+	  pr("There are " .. #ps .. " players")
+
       for _, p in ipairs(ps) do
          if IsValid(p) then
-            pr(p:GetTraitor() and "TRAITOR" or "Innocent", ":", p:Nick())
+			local role = "Innocent"
+			if p:GetTraitor() then
+				role = "Traitor"
+			elseif p:GetDetective() then
+				role = "Detective"
+			elseif p:GetRoleAdditive() > ROLE_A_NONE then
+				local rola = p:GetRoleAdditive()
+				if rola == ROLE_A_SURVIVALIST then
+					role = "Survivalist"
+				elseif rola == ROLE_A_PHOENIX then
+					role = "Phoenix"
+				else
+					role = "Unknown additive"
+				end
+			end
+            pr(role, "\t:\t", p:Nick())
          end
       end
    end
