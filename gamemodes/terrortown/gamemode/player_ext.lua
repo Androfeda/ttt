@@ -51,17 +51,27 @@ end
 function plymeta:SubtractCredits(amt) self:AddCredits(-amt) end
 
 function plymeta:SetDefaultCredits()
-   if self:GetTraitor() then
-      local c = GetConVarNumber("ttt_credits_starting")
-      if CountTraitors() == 1 then
-         c = c + GetConVarNumber("ttt_credits_alonebonus")
-      end
-      self:SetCredits(math.ceil(c))
-   elseif self:GetDetective() then
-      self:SetCredits(math.ceil(GetConVarNumber("ttt_det_credits_starting")))
-   else
-      self:SetCredits(0)
-   end
+	if self:GetTraitor() then
+		local c = GetConVarNumber("ttt_credits_starting")
+		if CountTraitors() == 1 then
+			c = c + GetConVarNumber("ttt_credits_alonebonus")
+		end
+		self:SetCredits(math.ceil(c))
+	elseif self:GetDetective() then
+		local c = GetConVarNumber("ttt_det_credits_starting")
+		if CountDetectives() == 1 then
+			c = c + GetConVarNumber("ttt_det_credits_alonebonus")
+		end
+		self:SetCredits(math.ceil(c))
+	elseif self:IsRole_A(ROLE_A_SURVIVALIST) then
+		local c = GetConVarNumber("ttt_a_ad_survivalist_credits_starting")
+		if CountSurvivalists() == 1 then
+			c = c + GetConVarNumber("ttt_a_ad_survivalist_credits_alonebonus")
+		end
+		self:SetCredits(math.ceil(c))
+	else
+		self:SetCredits(0)
+	end
 end
 
 function plymeta:SendCredits()

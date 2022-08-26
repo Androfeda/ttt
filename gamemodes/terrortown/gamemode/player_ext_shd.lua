@@ -32,8 +32,8 @@ function plymeta:IsActiveTraitor() return self:IsActiveRole(ROLE_TRAITOR) end
 function plymeta:IsActiveDetective() return self:IsActiveRole(ROLE_DETECTIVE) end
 function plymeta:IsActiveSpecial() return self:IsSpecial() and self:IsActive() end
 
-function plymeta:IsRole_A(role) return self:GetRoleAdditive() == role end
-function plymeta:IsActiveRole_A(role) return self:GetRoleAdditive() == role and self:IsActive() end
+function plymeta:IsRole_A(role) return self:IsRole(ROLE_INNOCENT) and self:GetRoleAdditive() == role end
+function plymeta:IsActiveRole_A(role) return self:IsActiveRole(ROLE_INNOCENT) and self:GetRoleAdditive() == role end
 
 local role_strings = {
    [ROLE_TRAITOR]   = "traitor",

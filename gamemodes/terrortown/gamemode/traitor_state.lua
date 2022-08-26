@@ -6,8 +6,28 @@ function GetTraitors()
 
    return trs
 end
-
 function CountTraitors() return #GetTraitors() end
+
+-- what sicko didn't add this by default
+function GetDetectives()
+   local trs = {}
+   for k,v in ipairs(player.GetAll()) do
+      if v:GetDetective() then table.insert(trs, v) end
+   end
+
+   return trs
+end
+function CountDetectives() return #GetDetectives() end
+
+function GetSurvivalists()
+   local trs = {}
+   for k,v in ipairs(player.GetAll()) do
+      if v:IsRole_A(ROLE_A_SURVIVALIST) then table.insert(trs, v) end
+   end
+
+   return trs
+end
+function CountSurvivalists() return #GetSurvivalists() end
 
 ---- Role state communication
 
@@ -16,7 +36,7 @@ local function SendPlayerRoles()
    for k, v in ipairs(player.GetAll()) do
       net.Start("TTT_Role")
          net.WriteUInt(v:GetRole(), 2)
-         net.WriteUInt(v:GetRoleAdditive(), 4)
+         net.WriteUInt(v:GetRoleAdditive() or 0, 4)
       net.Send(v)
    end
 end

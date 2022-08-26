@@ -16,7 +16,11 @@ end
 SWEP.Base                  = "attt_base"
 
 SWEP.Kind                  = WEAPON_PISTOL
-SWEP.WeaponID              = AMMO_PISTOL
+SWEP.EquipMenuData = {
+   type = "item_weapon",
+   desc = [[Swiss-made burst pistol.]]
+}
+SWEP.CanBuy                = { ROLE_INNOCENT }
 
 SWEP.Primary.Recoil        = 1.5
 SWEP.Primary.Damage        = 25

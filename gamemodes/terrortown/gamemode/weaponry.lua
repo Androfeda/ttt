@@ -298,7 +298,7 @@ local function GiveEquipmentWeapon(sid, cls)
    local ply = player.GetBySteamID(sid)
    local tmr = "give_equipment" .. sid
 
-   if (not IsValid(ply)) or (not ply:IsActiveSpecial()) then
+   if (!IsValid(ply)) or !(ply:IsActiveSpecial() or ply:IsActiveRole_A(ROLE_A_SURVIVALIST)) then
       timer.Remove(tmr)
       return
    end

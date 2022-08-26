@@ -78,11 +78,16 @@ CreateConVar("ttt_detective_max", "32")
 CreateConVar("ttt_detective_min_players", "8")
 CreateConVar("ttt_detective_karma_min", "600")
 
-CreateConVar("ttt_a_ad_survivalist_pct", "0.13", FCVAR_NOTIFY)
+-- Additional roles
+CreateConVar("ttt_a_ad_survivalist_pct", "0.112", FCVAR_NOTIFY)
 CreateConVar("ttt_a_ad_survivalist_max", "32")
-CreateConVar("ttt_a_ad_survivalist_min_players", "8")
+CreateConVar("ttt_a_ad_survivalist_min_players", "10")
 
-CreateConVar("ttt_a_ad_phoenix_pct", "0.13", FCVAR_NOTIFY)
+-- Survivalist credits
+CreateConVar("ttt_a_ad_survivalist_credits_starting", "1")
+CreateConVar("ttt_a_ad_survivalist_credits_alonebonus", "0")
+
+CreateConVar("ttt_a_ad_phoenix_pct", "0.112", FCVAR_NOTIFY)
 CreateConVar("ttt_a_ad_phoenix_max", "32")
 CreateConVar("ttt_a_ad_phoenix_min_players", "8")
 
@@ -100,6 +105,8 @@ CreateConVar("ttt_credits_alonebonus", "1")
 CreateConVar("ttt_det_credits_starting", "1")
 CreateConVar("ttt_det_credits_traitorkill", "0")
 CreateConVar("ttt_det_credits_traitordead", "1")
+
+CreateConVar("ttt_det_credits_alonebonus", "1")
 
 -- Other
 CreateConVar("ttt_use_weapon_spawn_scripts", "1")
@@ -850,6 +857,17 @@ local function GetDetectiveCount(ply_count)
 end
 
 
+local function GetSurvivalistCount(ply_count)
+   if ply_count < GetConVar("ttt_a_ad_survivalist_min_players"):GetInt() then return 0 end
+
+   local det_count = math.floor(ply_count * GetConVar("ttt_a_ad_survivalist_pct"):GetFloat())
+   -- limit to a max
+   det_count = math.Clamp(det_count, 1, GetConVar("ttt_a_ad_survivalist_max"):GetInt())
+
+   return det_count
+end
+
+
 function SelectRoles()
    local choices = {}
    local prev_roles = {
@@ -946,6 +964,8 @@ function SelectRoles()
          table.remove(choices, pick)
       end
    end
+
+   PrintTable(choices)
 
    GAMEMODE.LastRole = {}
 

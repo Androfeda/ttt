@@ -39,7 +39,7 @@ SWEP.Secondary.Delay       = 0.5
 SWEP.NoSights              = true
 
 SWEP.Kind                  = WEAPON_EQUIP2
-SWEP.CanBuy                = {ROLE_TRAITOR}
+SWEP.CanBuy                = { ROLE_TRAITOR, ROLE_INNOCENT }
 SWEP.WeaponID              = AMMO_PUSH
 
 SWEP.UseHands              = true

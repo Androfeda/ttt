@@ -16,7 +16,6 @@ end
 SWEP.Base                  = "attt_base"
 
 SWEP.Kind                  = WEAPON_HEAVY
-
 SWEP.EquipMenuData = {
    type = "item_weapon",
    desc = [[French-made burst assault rifle.]]
@@ -86,10 +85,10 @@ SWEP.IronsightPos = {
 --
 -- Recoil
 --
-SWEP.RecoilUp							= 2 -- degrees punched
+SWEP.RecoilUp							= 2.4 -- degrees punched
 SWEP.RecoilUpDrift						= 0.2 -- how much will be smooth recoil
 SWEP.RecoilUpDecay						= 10 -- how much recoil to remove per second
-SWEP.RecoilSide							= 1.5 -- degrees punched, in either direction (-100% to 100%)
+SWEP.RecoilSide							= 1.6 -- degrees punched, in either direction (-100% to 100%)
 SWEP.RecoilSideDrift					= 0.7 -- how much will be smooth recoil
 SWEP.RecoilSideDecay					= 10 -- how much recoil to remove per second
 SWEP.RecoilFlipChance					= ( 1 / 2 ) -- chance to flip recoil direction
