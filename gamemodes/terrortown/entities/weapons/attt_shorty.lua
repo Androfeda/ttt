@@ -88,7 +88,7 @@ SWEP.Pellets = 7
 
 SWEP.ViewModelFOV = 60
 SWEP.ActivePos = {
-	Pos = Vector(-1.2, -4, 0.3),
+	Pos = Vector(-2, -6, 0.5),
 	Ang = Angle(2, 2, 0),
 }
 SWEP.IronsightPos = {

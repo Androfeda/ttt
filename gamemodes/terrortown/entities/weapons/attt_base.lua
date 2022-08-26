@@ -68,6 +68,11 @@ SWEP.BodyDamageMults = {
 	[HITGROUP_GEAR]		= 1,
 }
 
+SWEP.ActivePos = {
+	Pos = Vector(0, 0, 0),
+	Ang = Angle(0, 0, 0),
+}
+
 --
 -- Useless shit that you should NEVER touch
 --
@@ -111,11 +116,9 @@ function SWEP:SetupDataTables()
 	self:NetworkVar("Float", 4, "ReloadingTime")
 	self:NetworkVar("Float", 5, "RecoilP")
 	self:NetworkVar("Float", 6, "RecoilY")
-
 	self:NetworkVar("Float", 7, "DISP_Air")
 	self:NetworkVar("Float", 8, "DISP_Move")
 	self:NetworkVar("Float", 9, "DISP_Crouch")
-
 	self:NetworkVar("Float", 10, "StopSightTime")
 	
 	self:SetFiremode(1)
@@ -543,15 +546,15 @@ function SWEP:GetViewModelPosition(pos, ang)
 	local p = self:GetOwner()
 
 	if IsValid(p) then
-
-	do -- ironsighting
+	do -- activepos, 'idle'
 		local b_pos, b_ang = Vector(), Angle()
 		local si = 1-self:GetSightDelta()
+		si = math.ease.InOutSine( si )
 
 		b_pos:Add( self.ActivePos.Pos )
-		b_pos:Mul( math.ease.InOutSine( si ) )
 		b_ang:Add( self.ActivePos.Ang )
-		b_ang:Mul( math.ease.InOutSine( si ) )
+		b_pos:Mul( si )
+		b_ang:Mul( si )
 
 		opos:Add( b_pos )
 		oang:Add( b_ang )

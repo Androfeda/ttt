@@ -69,6 +69,15 @@ SWEP.DamageFar = 12
 SWEP.RangeNear = 12
 SWEP.RangeFar = 30
 
+SWEP.BodyDamageMults = {
+	[HITGROUP_HEAD]		= 2,
+	[HITGROUP_LEFTARM]	= 1,
+	[HITGROUP_RIGHTARM]	= 1,
+	[HITGROUP_LEFTLEG]	= 0.55,
+	[HITGROUP_RIGHTLEG]	= 0.55,
+	[HITGROUP_GEAR]		= 1,
+}
+
 SWEP.ViewModelFOV = 60
 SWEP.ActivePos = {
 	Pos = Vector(0.5, -2, -0.5),
