@@ -985,8 +985,6 @@ function SelectRoles()
       end
    end
 
-   PrintTable(choices)
-
    GAMEMODE.LastRole = {}
 
    for _, ply in ipairs(plys) do

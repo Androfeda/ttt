@@ -427,20 +427,23 @@ function SWEP:Think()
 		self:SetShotgunReloading( ATTTSG_NO )
 		self:SendAnim( ACT_SHOTGUN_RELOAD_FINISH, "reload_finish" )
 	end
-
-	if self:GetShotgunReloading() == ATTTSG_START and self:GetReloadingTime() < CurTime() then
-		self:SetShotgunReloading( ATTTSG_INSERT )
-	elseif self:GetShotgunReloading() == ATTTSG_INSERT and self:GetReloadingTime() < CurTime() then
-		if self:Clip1() >= self:GetMaxClip1() then
-			self:SetShotgunReloading( ATTTSG_NO )
-			self:SendAnim( ACT_SHOTGUN_RELOAD_FINISH, "reload_finish" )
-		else
-			self:SendAnim( ACT_VM_RELOAD, "reload" )
+	if self:GetShotgunReloading() then
+		if self:GetShotgunReloading() == ATTTSG_START and self:GetReloadingTime() < CurTime() then
+			self:SetShotgunReloading( ATTTSG_INSERT )
+		elseif self:GetShotgunReloading() == ATTTSG_INSERT and self:GetReloadingTime() < CurTime() then
+			if self:Clip1() >= self:GetMaxClip1() then
+				self:SetShotgunReloading( ATTTSG_NO )
+				self:SendAnim( ACT_SHOTGUN_RELOAD_FINISH, "reload_finish" )
+			else
+				self:SendAnim( ACT_VM_RELOAD, "reload" )
+			end
 		end
-	elseif self:GetIdleIn() > 0 and self:GetIdleIn() <= CurTime() then
-		self:SendAnim( ACT_VM_IDLE, "idle" )
-		self:SetPlaybackRate( 1 )
-		self:SetIdleIn( -1 )
+	else
+		if self:GetIdleIn() > 0 and self:GetIdleIn() <= CurTime() then
+			self:SendAnim( ACT_VM_IDLE, "idle" )
+			self:SetPlaybackRate( 1 )
+			self:SetIdleIn( -1 )
+		end
 	end
 end
 

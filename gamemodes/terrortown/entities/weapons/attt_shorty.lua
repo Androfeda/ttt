@@ -60,6 +60,10 @@ SWEP.AnimOverride = {
 		Source = ACT_VM_DRAW,
 		Mult = 1.2,
 	},
+	[ACT_SHOTGUN_RELOAD_START] = {
+		Source = ACT_SHOTGUN_RELOAD_START,
+		ReloadingTime = 0.2,
+	},
 	[ACT_VM_RELOAD] = {
 		Source = ACT_VM_RELOAD,
 		LoadIn = 0.2,
