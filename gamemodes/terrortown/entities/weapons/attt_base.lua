@@ -241,6 +241,7 @@ function SWEP:FireBullet(bullet)
 		bullet.Src = self:GetOwner():GetShootPos()
 		bullet.Dir = dir
 		bullet.Distance = 32768
+		bullet.Force = 10
 
 		bullet.Callback = function( atk, tr, dmg )
 			-- Thank you Arctic, very cool
@@ -431,7 +432,7 @@ function SWEP:Think()
 		if self:GetShotgunReloading() == ATTTSG_START and self:GetReloadingTime() < CurTime() then
 			self:SetShotgunReloading( ATTTSG_INSERT )
 		elseif self:GetShotgunReloading() == ATTTSG_INSERT and self:GetReloadingTime() < CurTime() then
-			if self:Clip1() >= self:GetMaxClip1() then
+			if self:Clip1() >= self:GetMaxClip1() or (self:Ammo1() <= 0) then
 				self:SetShotgunReloading( ATTTSG_NO )
 				self:SendAnim( ACT_SHOTGUN_RELOAD_FINISH, "reload_finish" )
 			else
