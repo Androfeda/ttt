@@ -39,7 +39,8 @@ SWEP.Secondary.Ammo        = "none"
 SWEP.Secondary.Delay       = 0.3
 
 SWEP.Kind                  = WEAPON_ROLE
-SWEP.CanBuy                = nil -- no longer a buyable thing
+SWEP.CanBuy                = {ROLE_INNOCENT} -- buyable for Survivalist
+SWEP.LimitedStock          = true
 SWEP.WeaponID              = AMMO_WTESTER
 
 SWEP.InLoadoutFor          = {ROLE_DETECTIVE}

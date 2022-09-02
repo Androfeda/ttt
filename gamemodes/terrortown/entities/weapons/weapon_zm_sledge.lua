@@ -52,17 +52,17 @@ SWEP.AnimOverride = {
 SWEP.Firemodes = {
 	{
 		Count = math.huge,
-		Delay = 0.074,
+		Delay = 0.084,
 	}
 }
 
-SWEP.DamageNear = 9
+SWEP.DamageNear = 10
 SWEP.DamageFar = 7
 SWEP.RangeNear = 30
 SWEP.RangeFar = 50
 
 SWEP.BodyDamageMults = {
-	[HITGROUP_HEAD]		= 2.2,
+	[HITGROUP_HEAD]		= 2,
 	[HITGROUP_LEFTARM]	= 1,
 	[HITGROUP_RIGHTARM]	= 1,
 	[HITGROUP_LEFTLEG]	= 0.55,

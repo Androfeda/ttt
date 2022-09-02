@@ -59,8 +59,8 @@ SWEP.Firemodes = {
 	}
 }
 
-SWEP.DamageNear = 19
-SWEP.DamageFar = 12
+SWEP.DamageNear = 16
+SWEP.DamageFar = 11
 SWEP.RangeNear = 12
 SWEP.RangeFar = 30
 

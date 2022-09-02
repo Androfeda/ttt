@@ -11,7 +11,11 @@ if CLIENT then
 
    SWEP.EquipMenuData = {
       type = "item_weapon",
-      desc = "sipistol_desc"
+      desc = [[
+Low-noise handgun, uses pistol ammo.
+
+Tranquilizer mix ensures victims
+will not scream when killed.]]
    };
 
    SWEP.Icon               = "vgui/ttt/icon_silenced"
@@ -35,6 +39,7 @@ SWEP.Primary.SoundLevel    = 50
 SWEP.Kind                  = WEAPON_EQUIP
 SWEP.CanBuy                = {ROLE_TRAITOR} -- only traitors can buy
 SWEP.WeaponID              = AMMO_SIPISTOL
+SWEP.LimitedStock          = true
 
 SWEP.AmmoEnt               = "item_ammo_pistol_ttt"
 SWEP.IsSilent              = true
@@ -79,7 +84,7 @@ SWEP.Firemodes = {
 	}
 }
 
-SWEP.DamageNear = 21
+SWEP.DamageNear = 18
 SWEP.DamageFar = 17
 SWEP.RangeNear = 15
 SWEP.RangeFar = 25

@@ -62,17 +62,20 @@ local function IdentifyBody(ply, rag)
    if bodyfound:GetBool() and not CORPSE.GetFound(rag, false) then
       local roletext = nil
       local role = rag.was_role
+      local rolea = rag.was_rolea
       if role == ROLE_TRAITOR then
-         roletext = "body_found_t"
+         roletext = "They were a dastardly Traitor!"
       elseif role == ROLE_DETECTIVE then
-         roletext = "body_found_d"
+         roletext = "They were a detective."
+	  elseif rolea == ROLE_A_SURVIVALIST then
+         roletext = "They were an innocent Survivalist."
       else
-         roletext = "body_found_i"
+         roletext = "They were innocent."
       end
 
       LANG.Msg("body_found", {finder = finder,
                               victim = nick,
-                              role = LANG.Param(roletext)})
+                              role = roletext})--LANG.Param(roletext)})
    end
 
    -- Register find
@@ -195,6 +198,7 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
    local nick  = CORPSE.GetPlayerNick(rag)
    local traitor = (rag.was_role == ROLE_TRAITOR)
    local role  = rag.was_role
+   local rolea  = rag.was_rolea
    local eq    = rag.equipment or EQUIP_NONE
    local c4    = rag.bomb_wire or -1
    local dmg   = rag.dmgtype or DMG_GENERIC
@@ -214,7 +218,7 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
    end
 
    local credits = CORPSE.GetCredits(rag, 0)
-   if ply:IsActiveSpecial() and credits > 0 and (not long_range) then
+   if (ply:IsActiveSpecial() or ply:IsActiveRole_A(ROLE_A_SURVIVALIST)) and credits > 0 and (not long_range) then
       LANG.Msg(ply, "body_credits", {num = credits})
       ply:AddCredits(credits)
 
@@ -260,6 +264,7 @@ function CORPSE.ShowSearch(ply, rag, covert, long_range)
       net.WriteString(nick)
       net.WriteUInt(eq, 16) -- Equipment ( 16 = max. )
       net.WriteUInt(role, 2) -- ( 2 bits )
+      net.WriteUInt(rolea, 4) -- ( 4 bits )
       net.WriteInt(c4, bitsRequired(C4_WIRE_COUNT) + 1) -- -1 -> 2^bits ( default c4: 4 bits )
       net.WriteUInt(dmg, 30) -- DMG_BUCKSHOT is the highest. ( 30 bits )
       net.WriteString(wep)
@@ -409,6 +414,7 @@ function CORPSE.Create(ply, attacker, dmginfo)
    -- death circumstances
    rag.equipment = ply:GetEquipmentItems()
    rag.was_role = ply:GetRole()
+   rag.was_rolea = ply:GetRoleAdditive() or ROLE_A_NONE
    rag.bomb_wire = ply.bomb_wire
    rag.dmgtype = dmginfo:GetDamageType()
 

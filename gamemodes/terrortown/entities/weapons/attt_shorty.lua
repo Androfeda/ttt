@@ -26,6 +26,7 @@ Accurate short-range shotgun.
 Low capacity.]]
 }
 SWEP.CanBuy                = { ROLE_INNOCENT }
+SWEP.LimitedStock          = true
 
 SWEP.Primary.Ammo          = "Buckshot"
 SWEP.Primary.Damage        = 11
@@ -114,7 +115,7 @@ SWEP.RecoilFlipChance					= ( 1 / 2 ) -- chance to flip recoil direction
 SWEP.RecoilADSMult						= ( 3 / 4 ) -- multiply shot recoil by this amount when ads'd
 
 SWEP.Dispersion							= 5
-SWEP.Dispersion_Move					= 2.5 -- at 200 hu/s
-SWEP.Dispersion_Air						= 2.5
+SWEP.Dispersion_Move					= 2.2 -- at 200 hu/s
+SWEP.Dispersion_Air						= 2.2
 SWEP.Dispersion_Crouch					= ( 3 / 4 )
-SWEP.Dispersion_Sights					= ( 3 / 4 )
+SWEP.Dispersion_Sights					= ( 2 / 3 )

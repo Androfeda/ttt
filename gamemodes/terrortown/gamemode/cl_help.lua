@@ -52,6 +52,17 @@ function HELPSCRN:Show()
    dsettings:SetPadding(10)
    dsettings:SetSpacing(10)
 
+   --- Androfeda
+
+   local dgui = vgui.Create("DForm", dsettings)
+   dgui:SetName("Androfeda TTT specific options")
+
+   local cb = nil
+
+   dgui:CheckBox("Toggle ADS", "ttt_a_toggleads")
+
+   dsettings:AddItem(dgui)
+
    --- Interface area
 
    local dgui = vgui.Create("DForm", dsettings)

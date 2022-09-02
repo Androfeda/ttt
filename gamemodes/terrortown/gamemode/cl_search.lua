@@ -56,7 +56,7 @@ local TypeToMat = {
    eq_armor="armor",
    eq_radar="radar",
    eq_disg="disguise",
-   role={[ROLE_TRAITOR]="traitor", [ROLE_DETECTIVE]="det", [ROLE_INNOCENT]="inno"},
+   role={[ROLE_TRAITOR]="traitor", [ROLE_DETECTIVE]="det", [ROLE_INNOCENT]="inno", [ROLE_A_SURVIVALIST+10]="survivalist"},
    c4="code",
    dmg=DmgToMat,
    wep=WeaponToIcon,
@@ -106,6 +106,8 @@ function PreprocSearch(raw)
             search[t].text = T("search_role_t")
          elseif d == ROLE_DETECTIVE then
             search[t].text = T("search_role_d")
+         elseif d == ROLE_A_SURVIVALIST+10 then
+            search[t].text = "This person was an innocent Survivalist."
          else
             search[t].text = T("search_role_i")
          end
@@ -455,6 +457,10 @@ local function ReceiveRagdollSearch()
 
    -- Traitor things
    search.role = net.ReadUInt(2)
+   search.rolea = net.ReadUInt(4) -- rolea
+   if search.rolea != ROLE_A_NONE then
+	search.role = search.rolea + 10
+   end
    search.c4 = net.ReadInt(bitsRequired(C4_WIRE_COUNT) + 1)
 
    -- Kill info

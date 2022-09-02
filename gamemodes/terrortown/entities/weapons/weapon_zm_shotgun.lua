@@ -101,5 +101,5 @@ SWEP.RecoilADSMult						= ( 4 / 5 ) -- multiply shot recoil by this amount when 
 SWEP.Dispersion							= 7
 SWEP.Dispersion_Move					= 3 -- at 200 hu/s
 SWEP.Dispersion_Air						= 3
-SWEP.Dispersion_Crouch					= ( 4 / 5 )
-SWEP.Dispersion_Sights					= ( 4 / 5 )
+SWEP.Dispersion_Crouch					= ( 3 / 4 )
+SWEP.Dispersion_Sights					= ( 2 / 3 )

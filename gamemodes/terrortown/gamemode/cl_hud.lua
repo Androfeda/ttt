@@ -477,16 +477,16 @@ local function ATTT_HUD(p)
 	if !(WSWITCH and WSWITCH.Show) and we and we.Primary and we:Clip1() >= 0 then
 		draw.RoundedBoxEx( (c*16), w - (c*118), h - (c*44), (c*118), (c*44), CLR_B, true, false, false, false )
 		if we.GetFiremode and we:GetFiremode() then
-			draw.RoundedBoxEx( (c*16), w - (c*64), h - (c*44) - (c*14), (c*64), (c*14), CLR_B, true, false, false, false )
+			--draw.RoundedBoxEx( (c*16), w - (c*64), h - (c*44) - (c*14), (c*64), (c*14), CLR_B, true, false, false, false )
 			local fmn = we:GetFiremodeTable(we:GetFiremode())
 			if fmn.Count == 1 then
-				fmn = "Semi-auto"
+				fmn = "Semi-auto"--"Semi-auto"
 			elseif fmn.Count == math.huge then
-				fmn = "Automatic"
+				fmn = "Auto"--"Automatic"
 			else
-				fmn = fmn.Count .. "-round burst"
+				fmn = fmn.Count .. "-burst"--fmn.Count .. "-round burst"
 			end
-			ATTT_TextS( fmn, "ATTT_Bahnschrift_10", w - (c*31), h - (c*45.5), CLR_W, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
+			ATTT_TextS( fmn, "ATTT_Bahnschrift_8", w - (c*90), h - (c*23.5), CLR_W, TEXT_ALIGN_CENTER, TEXT_ALIGN_BOTTOM )
 		end
 		ATTT_RectS( w - ow - (c*100), h - oh - (c*7), (c*100), (c*7), (c*1.5), CLR_W )
 		surface.SetDrawColor( CLR_W )

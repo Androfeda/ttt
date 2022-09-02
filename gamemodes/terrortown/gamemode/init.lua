@@ -79,7 +79,7 @@ CreateConVar("ttt_detective_min_players", "8")
 CreateConVar("ttt_detective_karma_min", "600")
 
 -- Additional roles
-CreateConVar("ttt_a_ad_survivalist_pct", "0.112", FCVAR_NOTIFY)
+CreateConVar("ttt_a_ad_survivalist_pct", "0.145", FCVAR_NOTIFY)
 CreateConVar("ttt_a_ad_survivalist_max", "32")
 CreateConVar("ttt_a_ad_survivalist_min_players", "10")
 

@@ -32,6 +32,7 @@ function CreateTransferMenu(parent)
 
    -- fill combobox
    local r = LocalPlayer():GetRole()
+   if r == ROLE_INNOCENT then r = ROLE_DETECTIVE end
    for _, p in ipairs(player.GetAll()) do
       if IsValid(p) and p:IsActiveRole(r) and p != LocalPlayer() then
          dpick:AddChoice(p:Nick(), p:SteamID())
@@ -56,7 +57,13 @@ function CreateTransferMenu(parent)
    dform:AddItem(dpick)
    dform:AddItem(dsubmit)
 
-   dform:Help(LANG.GetParamTranslation("xfer_help", {role = LocalPlayer():GetRoleString()}))
+	local roless = LocalPlayer():GetRoleStringRaw()
+	if roless == "innocent" then
+		roless = "Detective"
+	else
+		roless = LocalPlayer():GetRoleString()
+	end
+	dform:Help(LANG.GetParamTranslation("xfer_help", {role = roless}))
 
    return dform
 end

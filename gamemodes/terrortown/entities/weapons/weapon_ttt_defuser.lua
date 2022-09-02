@@ -11,7 +11,11 @@ if CLIENT then
 
    SWEP.EquipMenuData = {
       type = "item_weapon",
-      desc = "defuser_desc"
+      desc = [[
+Instantly defuse a C4 explosive.
+
+Unlimited uses. C4 will emit light and
+be easier to hear by passively carrying this.]]
    };
 
    SWEP.Icon                 = "vgui/ttt/icon_defuser"

@@ -11,17 +11,18 @@ local function GetTextForRole(role, role_a)
 	if role == ROLE_INNOCENT then
 		if role_a == ROLE_A_SURVIVALIST then
 			return [[
-You are a Survivalist! Terrorist HQ has set aside extra resources for you to help find the traitors.
+You are a SURVIVALIST! Terrorist HQ has set aside extra resources for you to help find the traitors.
+With your detective-like equipment, you can do work the detective is too busy for!
 Use them to assist your fellow Terrorists, but be careful:
-If the traitors catch wind of who you are, they might be willing to take you down first!
+If the traitors catch wind of what you're doing, they might put their sights over you first!
 
-Watch your back and work with your comrades to get out of this alive!]]
+Watch your back and use your equipment to get out of this alive!]]
 		elseif role_a == ROLE_A_PHOENIX then
 			return [[
-You are an innocent Terrorist, and a Phoenix!
-You will come back from the dead after you die.
+You are an innocent terrorist, and a PHOENIX!
+You will be revived after you die.
 
-Watch your back and work with your comrades to get out of this.. double alive!]]
+Watch your back and take advantage of your ability to get out of this alive!]]
 		else
 			return GetTranslation("info_popup_innocent")
 		end
