@@ -16,11 +16,6 @@ end
 SWEP.Base                  = "attt_base"
 
 SWEP.Kind                  = WEAPON_HEAVY
-SWEP.EquipMenuData = {
-   type = "item_weapon",
-   desc = [[French-made burst assault rifle.]]
-}
-SWEP.CanBuy                = { ROLE_INNOCENT }
 
 SWEP.Primary.Delay         = 0.19
 SWEP.Primary.Recoil        = 1.6
