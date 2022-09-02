@@ -268,7 +268,6 @@ local function TraitorMenuPopup()
             local slot = vgui.Create("SimpleIconLabelled")
             slot:SetIcon("vgui/ttt/slotcap")
 			local coool = color_slot[ply:GetRole()]
-			print(ply:GetRoleAdditive())
 			if ply:IsRole(ROLE_INNOCENT) and ply:GetRoleAdditive() > ROLE_A_NONE then
 				coool = color_slot[ply:GetRoleAdditive() + 10]
 			end

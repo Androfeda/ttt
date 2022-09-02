@@ -11,9 +11,8 @@ local function GetTextForRole(role, role_a)
 	if role == ROLE_INNOCENT then
 		if role_a == ROLE_A_SURVIVALIST then
 			return [[
-You are a SURVIVALIST! Terrorist HQ has set aside extra resources for you to help find the traitors.
-With your detective-like equipment, you can do work the detective is too busy for!
-Use them to assist your fellow Terrorists, but be careful:
+You are a SURVIVALIST! With your detective-like equipment, you can do work the detective is too busy for!
+Use them to assist your fellow comrades, but be careful:
 If the traitors catch wind of what you're doing, they might put their sights over you first!
 
 Watch your back and use your equipment to get out of this alive!]]
