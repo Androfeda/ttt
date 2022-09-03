@@ -58,10 +58,10 @@ SWEP.Firemodes = {
 		Count = math.huge,
 		Delay = 0.19,
 	},
-	{
-		Count = 1,
-		Delay = 0.07,
-	}
+--	{
+--		Count = 1,
+--		Delay = 0.07,
+--	}
 }
 
 SWEP.DamageNear = 22

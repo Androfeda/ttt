@@ -482,7 +482,7 @@ local function ATTT_HUD(p)
 			if fmn.Count == 1 then
 				fmn = "Semi-auto"--"Semi-auto"
 			elseif fmn.Count == math.huge then
-				fmn = "Auto"--"Automatic"
+				fmn = "Full-auto"--"Automatic"
 			else
 				fmn = fmn.Count .. "-burst"--fmn.Count .. "-round burst"
 			end

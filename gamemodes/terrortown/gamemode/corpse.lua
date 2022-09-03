@@ -66,11 +66,11 @@ local function IdentifyBody(ply, rag)
       if role == ROLE_TRAITOR then
          roletext = "They were a dastardly Traitor!"
       elseif role == ROLE_DETECTIVE then
-         roletext = "They were a detective."
+         roletext = "They were a Detective."
 	  elseif rolea == ROLE_A_SURVIVALIST then
          roletext = "They were an innocent Survivalist."
       else
-         roletext = "They were innocent."
+         roletext = "They were an Innocent."
       end
 
       LANG.Msg("body_found", {finder = finder,

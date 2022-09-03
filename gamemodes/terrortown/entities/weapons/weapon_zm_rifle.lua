@@ -98,18 +98,22 @@ SWEP.IronsightPos = {
 --
 SWEP.RecoilUp							= 3 -- degrees punched
 SWEP.RecoilUpDrift						= 1 -- how much will be smooth recoil
-SWEP.RecoilUpDecay						= 10 -- how much recoil to remove per second
-SWEP.RecoilSide							= 2 -- degrees punched, in either direction (-100% to 100%)
+SWEP.RecoilUpDecay						= 20 -- how much recoil to remove per second
+SWEP.RecoilSide							= 3 -- degrees punched, in either direction (-100% to 100%)
 SWEP.RecoilSideDrift					= 1 -- how much will be smooth recoil
-SWEP.RecoilSideDecay					= 20 -- how much recoil to remove per second
+SWEP.RecoilSideDecay					= 10 -- how much recoil to remove per second
 SWEP.RecoilFlipChance					= ( 1 / 2 ) -- chance to flip recoil direction
-SWEP.RecoilADSMult						= ( 1 / 1 ) -- multiply shot recoil by this amount when ads'd
+SWEP.RecoilADSMult						= ( 1 ) -- multiply shot recoil by this amount when ads'd
 
 SWEP.Dispersion							= 0.5
 SWEP.Dispersion_Move					= 1 -- at 200 hu/s
 SWEP.Dispersion_Air						= 1
 SWEP.Dispersion_Crouch					= ( 1 / 3 )
 SWEP.Dispersion_Sights					= ( 1 / 15 )
+
+SWEP.MuzzleEffect						= "muzzleflash_minimi"
+SWEP.QCA_Muzzle							= 1
+SWEP.QCA_Case							= 2
 
 if CLIENT then
 local scope = Material("sprites/scope.vtf", "smooth")--surface.GetTextureID("sprites/scope")

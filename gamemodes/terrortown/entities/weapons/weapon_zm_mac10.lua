@@ -101,3 +101,7 @@ SWEP.Dispersion_Move					= 1.2 -- at 200 hu/s
 SWEP.Dispersion_Air						= 2.1
 SWEP.Dispersion_Crouch					= ( 3 / 4 )
 SWEP.Dispersion_Sights					= ( 3 / 4 )
+
+SWEP.MuzzleEffect						= "muzzleflash_pistol_cleric"
+SWEP.QCA_Muzzle							= 1
+SWEP.QCA_Case							= 2

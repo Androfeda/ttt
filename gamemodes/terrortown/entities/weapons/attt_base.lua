@@ -73,6 +73,23 @@ SWEP.ActivePos = {
 	Ang = Angle(0, 0, 0),
 }
 
+SWEP.IronsightPos = {
+	Pos = Vector(0, 0, 0),
+	Ang = Angle(0, 0, 0),
+}
+
+SWEP.MuzzleEffect						= "muzzleflash_4"
+SWEP.QCA_Muzzle							= 1
+SWEP.QCA_Case							= 2
+
+SWEP.ShellModel							= "models/shells/shell_9mm.mdl"
+SWEP.ShellSounds						= "autocheck"--ArcCW.ShellSoundsTable
+SWEP.ShellScale							= 1
+SWEP.ShellPhysScale						= 1
+SWEP.ShellPitch							= 100
+SWEP.ShellRotate						= 0
+SWEP.ShellMaterial						= nil
+
 --
 -- Useless shit that you should NEVER touch
 --
@@ -199,6 +216,8 @@ function SWEP:PrimaryAttack()
 		DamageFar = self.DamageFar,
 	}
 	self:FireBullet(bullet)
+	self:DoEffects()
+	self:DoShellEject()
 
 	-- Recoil
 	local p = self:GetOwner()
@@ -217,6 +236,55 @@ function SWEP:PrimaryAttack()
 	end
 	
 	return true
+end
+
+function SWEP:DoEffects(att)
+	if !game.SinglePlayer() and !IsFirstTimePredicted() then return end
+
+	local ed = EffectData()
+	ed:SetStart(self:GetOwner():GetAimVector())
+	ed:SetOrigin(self:GetOwner():GetAimVector())
+	ed:SetScale(1)
+	ed:SetEntity(self)
+	ed:SetAttachment(self.QCA_Muzzle or 1)
+
+	local efov = {}
+	efov.eff = "attt_wep_muzzleeffect"
+	efov.fx  = ed
+
+	util.Effect("attt_wep_muzzleeffect", ed)
+end
+
+function SWEP:DoShellEject(atti)
+    local eff = "attt_wep_shelleffect"
+
+    local owner = self:GetOwner()
+    if !IsValid(owner) then return end
+
+    local vm = self
+
+    if !owner:IsNPC() then owner:GetViewModel() end
+
+    local att = vm:GetAttachment(self.QCA_Case or 2)
+
+    if !att then return end
+
+    local pos, ang = att.Pos, att.Ang
+
+    local ed = EffectData()
+    ed:SetOrigin(pos)
+    ed:SetAngles(ang)
+    ed:SetAttachment(self.QCA_Case or 2)
+    ed:SetScale(1)
+    ed:SetEntity(self)
+    ed:SetNormal(ang:Forward())
+    ed:SetMagnitude(100)
+
+    local efov = {}
+    efov.eff = eff
+    efov.fx  = ed
+
+    util.Effect(eff, ed)
 end
 
 local LimbCompensation = {
@@ -768,6 +836,9 @@ function SWEP:DoDrawCrosshair()
 	return true
 end
 
+function SWEP:FireAnimationEvent(pos, ang, event, options)
+	return true
+end
 
 -- uhhhh
 -- replacements,
