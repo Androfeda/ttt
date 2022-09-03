@@ -257,6 +257,8 @@ function SWEP:DoEffects(att)
 end
 
 function SWEP:DoShellEject(atti)
+	if !game.SinglePlayer() and !IsFirstTimePredicted() then return end
+
     local eff = "attt_wep_shelleffect"
 
     local owner = self:GetOwner()
