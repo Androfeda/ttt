@@ -601,12 +601,20 @@ end
 -- Deploy and holster
 function SWEP:Deploy()
 	self:SendAnim( ACT_VM_DRAW, true )
+
+	self:SetLoadIn( -1 )
+	self:SetSightDelta( 0 )
+	self:SetShotgunReloading( ATTTSG_NO )
+
 	return true
 end
 
 function SWEP:Holster()
+
 	self:SetLoadIn( -1 )
 	self:SetSightDelta( 0 )
+	self:SetShotgunReloading( ATTTSG_NO )
+
 	return true
 end
 

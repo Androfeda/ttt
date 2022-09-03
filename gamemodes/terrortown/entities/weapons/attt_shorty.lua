@@ -84,10 +84,10 @@ SWEP.Firemodes = {
 
 SWEP.ShotgunReloading = true
 
-SWEP.DamageNear = 12
+SWEP.DamageNear = 14
 SWEP.DamageFar = 4
-SWEP.RangeNear = 4
-SWEP.RangeFar = 10
+SWEP.RangeNear = 6
+SWEP.RangeFar = 12
 
 SWEP.Pellets = 7
 

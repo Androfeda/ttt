@@ -7,7 +7,7 @@ EFFECT.Model = "models/shells/shell_57.mdl"
 EFFECT.Material = nil
 EFFECT.JustOnce = true
 EFFECT.AlreadyPlayedSound = false
-EFFECT.ShellTime = 1
+EFFECT.ShellTime = 2
 
 EFFECT.SpawnTime = 0
 
@@ -81,7 +81,7 @@ function EFFECT:Init(data)
         self.PhysScale = ent.ShellPhysScale or 1
         self.Pitch = ent.ShellPitch or 100
         self.Sounds = ent.ShellSounds
-        self.ShellTime = (ent.ShellTime or 0) + st
+        self.ShellTime = (ent.ShellTime or self.ShellTime or 0) + st
 
         if self.Sounds == "autocheck" and ent:GetPrimaryAmmoType() then
             local t = ent:GetPrimaryAmmoType()
