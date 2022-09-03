@@ -105,3 +105,7 @@ SWEP.Dispersion_Sights					= ( 3 / 4 )
 SWEP.MuzzleEffect						= "muzzleflash_pistol_cleric"
 SWEP.QCA_Muzzle							= 1
 SWEP.QCA_Case							= 2
+
+SWEP.ShellModel							= "models/shells/shell_9mm.mdl"
+SWEP.ShellScale							= 1
+SWEP.ShellPhysScale						= 1

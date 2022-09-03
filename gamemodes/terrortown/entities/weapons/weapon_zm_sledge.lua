@@ -103,3 +103,7 @@ SWEP.MuzzleEffect						= "muzzleflash_minimi"
 SWEP.QCA_Muzzle							= 1
 SWEP.QCA_Case							= 2
 
+SWEP.ShellModel							= "models/shells/shell_556.mdl"
+SWEP.ShellScale							= 1
+SWEP.ShellPhysScale						= 1
+

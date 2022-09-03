@@ -83,12 +83,13 @@ SWEP.QCA_Muzzle							= 1
 SWEP.QCA_Case							= 2
 
 SWEP.ShellModel							= "models/shells/shell_9mm.mdl"
-SWEP.ShellSounds						= "autocheck"--ArcCW.ShellSoundsTable
 SWEP.ShellScale							= 1
 SWEP.ShellPhysScale						= 1
+
 SWEP.ShellPitch							= 100
 SWEP.ShellRotate						= 0
 SWEP.ShellMaterial						= nil
+SWEP.ShellSounds						= "autocheck"--ArcCW.ShellSoundsTable
 
 --
 -- Useless shit that you should NEVER touch

@@ -115,6 +115,10 @@ SWEP.MuzzleEffect						= "muzzleflash_minimi"
 SWEP.QCA_Muzzle							= 1
 SWEP.QCA_Case							= 2
 
+SWEP.ShellModel							= "models/shells/shell_762nato.mdl"
+SWEP.ShellScale							= 1
+SWEP.ShellPhysScale						= 1
+
 if CLIENT then
 local scope = Material("sprites/scope.vtf", "smooth")--surface.GetTextureID("sprites/scope")
 function SWEP:CustomDrawHUD()

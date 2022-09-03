@@ -12,14 +12,31 @@ EFFECT.ShellTime = 1
 EFFECT.SpawnTime = 0
 
 local ShellSoundsTable = {
-	"player/pl_shell1.wav",
-	"player/pl_shell2.wav",
-	"player/pl_shell3.wav"
+	"attt/casings/casing_556_1.wav",
+	"attt/casings/casing_556_2.wav",
+	"attt/casings/casing_556_3.wav",
+	"attt/casings/casing_556_4.wav"
 }
+
+local MediumShellSoundsTable = {
+	"attt/casings/casing_308_1.wav",
+	"attt/casings/casing_308_2.wav",
+	"attt/casings/casing_308_3.wav",
+	"attt/casings/casing_308_4.wav"
+}
+
+local PistolShellSoundsTable = {
+	"attt/casings/casing_9mm_1.wav",
+	"attt/casings/casing_9mm_2.wav",
+	"attt/casings/casing_9mm_3.wav",
+	"attt/casings/casing_9mm_4.wav"
+}
+
 local ShotgunShellSoundsTable = {
-	"weapons/fx/tink/shotgun_shell1.wav",
-	"weapons/fx/tink/shotgun_shell2.wav",
-	"weapons/fx/tink/shotgun_shell3.wav"
+	"attt/casings/casing_12ga_1.wav",
+	"attt/casings/casing_12ga_2.wav",
+	"attt/casings/casing_12ga_3.wav",
+	"attt/casings/casing_12ga_4.wav"
 }
 
 function EFFECT:Init(data)
@@ -70,6 +87,10 @@ function EFFECT:Init(data)
             local t = ent:GetPrimaryAmmoType()
             if t == game.GetAmmoID("buckshot") then
                 self.Sounds = ShotgunShellSoundsTable
+            elseif t == game.GetAmmoID("pistol") then
+                self.Sounds = PistolShellSoundsTable
+            elseif t == game.GetAmmoID("ar2") or t == game.GetAmmoID("357") or t == game.GetAmmoID("AlyxGun")  then
+                self.Sounds = MediumShellSoundsTable
             else
                 self.Sounds = ShellSoundsTable
             end

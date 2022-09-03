@@ -97,3 +97,7 @@ SWEP.Dispersion_Move					= 1.1 -- at 200 hu/s
 SWEP.Dispersion_Air						= 1.1
 SWEP.Dispersion_Crouch					= ( 1 / 3 )
 SWEP.Dispersion_Sights					= ( 1 / 3 )
+
+SWEP.ShellModel							= "models/shells/shell_556.mdl"
+SWEP.ShellScale							= 1
+SWEP.ShellPhysScale						= 1
