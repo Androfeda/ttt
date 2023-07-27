@@ -57,10 +57,13 @@ function HELPSCRN:Show()
    local dgui = vgui.Create("DForm", dsettings)
    dgui:SetName("Androfeda TTT specific options")
 
-   local cb = nil
-
    dgui:CheckBox("Toggle ADS", "ttt_a_toggleads")
-
+   do
+      local combobox, label = dgui:ComboBox("Muzzleflash settings", "ttt_a_muzzleflash")
+	  combobox:AddChoice( "0: No muzzleflash", 0 )
+	  combobox:AddChoice( "1: Muzzleflash for yourself only", 1 )
+	  combobox:AddChoice( "2: Spectacular muzzleflashes for everyone", 2 )
+   end
    dsettings:AddItem(dgui)
 
    --- Interface area

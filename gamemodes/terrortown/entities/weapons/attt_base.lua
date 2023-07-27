@@ -112,6 +112,9 @@ function SWEP:Initalize()
 	self.Secondary.Automatic = true
 end
 
+local ttt_a_toggleads = CreateClientConVar( "ttt_a_toggleads", 0, true, true )
+local ttt_a_muzzleflash = CreateClientConVar( "ttt_a_muzzleflash", 1, true, true )
+
 ATTTSG_NO = 0
 ATTTSG_START = 1
 ATTTSG_INSERT = 2
@@ -142,6 +145,10 @@ function SWEP:SetupDataTables()
 	self:SetFiremode(1)
 	self:SetNextMechFire(0)
 	self:SetRecoilFlip( util.SharedRandom( "recoilflipinit", 0, 1, CurTime() ) < 0.5 and true or false )
+end
+
+function SWEP:OnReloaded()
+	self:CalcHoldType()
 end
 
 -- Firemodes
@@ -236,7 +243,51 @@ function SWEP:PrimaryAttack()
 		end
 	end
 	
+	-- Cool projected texture (badass)
+	if SERVER then
+		net.Start("ATTT_Hellfire")
+			net.WriteEntity(self)
+		net.SendPVS( self:GetOwner():GetPos() )
+	else
+		if ttt_a_muzzleflash:GetInt() > 0 then
+			self:Hellfire()
+		end
+	end
+	
 	return true
+end
+
+if SERVER then
+	util.AddNetworkString("ATTT_Hellfire")
+else
+	net.Receive("ATTT_Hellfire", function()
+		local wep = net.ReadEntity()
+		if wep:GetOwner() != LocalPlayer() and ttt_a_muzzleflash:GetInt() > 1 then
+			wep:Hellfire()
+		end
+	end)
+end
+
+function SWEP:Hellfire()
+	if CLIENT then
+		local lamp = ProjectedTexture() -- Create a projected texture
+
+		-- Set it all up
+		lamp:SetTexture( "attt/muzzleflash_light" )
+		lamp:SetFarZ( 1000 ) -- How far the light should shine
+		lamp:SetFOV( 120 )
+		lamp:SetEnableShadows( true )
+
+		lamp:SetPos( self:GetOwner():EyePos() + (self:GetOwner():EyeAngles():Forward()*16) ) -- Initial position and angles
+		lamp:SetAngles( self:GetOwner():EyeAngles() + Angle( math.Rand(-3, 3), math.Rand(-3, 3), math.Rand(-45, 45) ) )
+		lamp:Update()
+		
+		timer.Simple( 0.01, function()
+			if IsValid( lamp ) then
+				lamp:Remove()
+			end
+		end)
+	end
 end
 
 function SWEP:DoEffects(att)
@@ -423,7 +474,15 @@ function SWEP:GetAmmoBank()
 	return self:Clip1()
 end
 
-CreateClientConVar( "ttt_a_toggleads", 0, true, true )
+function SWEP:CalcHoldType()
+	local ht = self.HoldTypeHip
+	if self:GetSightDelta() > 0.2 then
+		ht = self.HoldTypeSight
+	end
+	self:SetHoldType( ht )
+	self:SetWeaponHoldType( ht )
+end
+
 
 -- Thinking
 function SWEP:Think()
@@ -480,12 +539,7 @@ function SWEP:Think()
 			if CLIENT and IsFirstTimePredicted() then p:SetEyeAngles( p:EyeAngles() - ( Angle( 0, remove ) ) ) end
 			self:SetRecoilY( math.Approach( ry, ry - remove, math.huge ) )
 		end
-		local ht = self.HoldTypeHip
-		if self:GetSightDelta() > 0.2 then
-			ht = self.HoldTypeSight
-		end
-		self:SetHoldType( ht )
-		self:SetWeaponHoldType( ht )
+		self:CalcHoldType()
 
 		local movem = p:GetAbsVelocity():Length2D()
 		movem = math.TimeFraction( 100, 200, movem )
